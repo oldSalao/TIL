@@ -1,4 +1,4 @@
-# JavaScript Fundamentals.
+# JavaScript Fundamentals - Part 1.
 
 ## 1. Value(값).
 
