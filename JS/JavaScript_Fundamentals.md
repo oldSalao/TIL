@@ -108,11 +108,13 @@ console.log(firstName);
 
 <br/>
 
-### 3-. Logical Operators.
+### 3-5. Logical Operators.
+
+&&, ||, !가 있다.
 
 <br/>
 
-### 3-. Operator Precedence
+### 3-6. Operator Precedence
 
 연산자들 사이에는 우선순위가 존재한다.
 아래 링크를 참조.
@@ -134,7 +136,7 @@ const jonasNew = `I'm ${firstName}, a ${year - birthYear} years old ${job}!`;
 
 ## 5. If/else
 
-기존에 알고있는 if/else와 동일.
+기본적으로 기존에 알고있는 if/else와 동일. 조건식에 boolean이 아닌 표현식이 기입되면 type coercion을 통해 boolean으로 형변환된다.
 
 <br/>
 
@@ -150,16 +152,17 @@ Type Conversion은 수동으로 타입을 변환하는 것이고 Type Coertion�
 
 - String() : 값의 타입을 문자열 타입으로 변환하는 Function.
 
+- Boolean() : 값의 타입을 Boolean 타입으로 변환하는 Function.
+
 ```js
 //type conversion
 const inputYear = "1991";
 
 console.log(Number(inputYear)); // 1991
-
 console.log(Number("Jonas")); // NaN
 console.log(typeof NaN); // Number
-
 console.log(String(23)); // "23"
+console.log(Boolean(0)); // false
 ```
 
 ### 6-2. Type Coercion
@@ -171,6 +174,8 @@ ex.
 - 문자열 + 값 => 문자열
 
 - 문자열 - 값 => 숫자
+
+- etc...
 
 ```js
 //type coercion
@@ -196,6 +201,77 @@ falsy value는 정확히 false는 아니지만 boolean으로 형변환을 거치
 
 - NaN
 
-### 7-1. Truthy value
+### 7-2. Truthy value
 
 falsy value가 아닌 값은 모두 truthy value에 해당하며 boolean으로 형변환을 거치면 true가 된다.
+
+### Ex.
+
+```js
+console.log(Boolean(0)); //false
+console.log(Boolean(undefined)); //false
+console.log(Boolean("Jonas")); //true
+console.log(Boolean({})); //true
+console.log(Boolean("")); //false
+```
+
+```js
+let height;
+
+if (height) {
+  console.log("YAY! height is defined!");
+} else {
+  //excute
+  console.log("Height is UNDEFINED");
+}
+```
+
+## 8. equality operator.
+
+==,===
+
+### 8-1. strict equality operator.(===,!==)
+
+말 그대로 엄격하다. 값 뿐만 아니라 타입까지 비교한다.
+
+<br/>
+
+### 8-2. loose equality operator.(==,!=)
+
+===와 달리 Type Coercion을 수행하여 값만 비교한다.
+
+```js
+console.log(18 === "18"); //false
+console.log(18 == "18"); //true
+```
+
+가능한 한 === 사용을 권장한다.
+
+<br/>
+
+## 9. Statements and Expressions
+
+### 9-1. Expression(표현식)
+
+Expression은 값을 만들어내는 코드조각을 의미.
+
+```js
+3 + 4; //expression
+1991; //expression
+true && false && !false; //expression
+```
+
+### 9-2. Statement(문장)
+
+Statement는 값을 만들어내지 않고 Action을 나타내는 코드를 의미한다. 하나의 완성된 문장이라고 생각하면 된다.
+
+```js
+if (23 > 30) {
+  //여기서 "23 is bigger"는 expression
+  const str = "23 is bigger";
+} // if statement
+```
+
+### 9-3. 정리
+
+표현식은 문장의 부분이 될 수 있지만 문장은 표현식의 부분이 될 수 없다. 표현식을 문장을 완성하기 위한 하나의 단어라고 생각할 수 있다.
