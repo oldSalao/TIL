@@ -275,3 +275,24 @@ if (23 > 30) {
 ### 9-3. 정리
 
 표현식은 문장의 부분이 될 수 있지만 문장은 표현식의 부분이 될 수 없다. 표현식을 문장을 완성하기 위한 하나의 단어라고 생각할 수 있다.
+
+## 10. Conditional Operator(삼항 연산자)
+
+(조건이 되는 표현식)?(조건이 참일때 반환될 표현식):(조건이 거짓일때 반환될 표현식)
+
+예시
+
+```js
+const age = 19;
+const drink = age >= 18 ? "beer 🍺" : "water 💧";
+console.log(drink); // beer 🍺
+```
+
+표현식으로써 if/else 문장의 기능을 수행할 수 있다.
+
+```js
+const age = 19;
+console.log(`I like to drink ${age >= 18 ? "beer 🍺" : "water 💧"}`); // I like to drink beer 🍺
+```
+
+조건에 따라 변수에 값을 할당하는 등 간단한 코드에 사용하는 것을 권장.
