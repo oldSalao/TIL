@@ -4,4 +4,4 @@ Today I Learned.
 
 ## JavaScript
 
-- [JavaScript Fundamentals](./JS/JavaScript_Fundamentals.md)
+- [JavaScript Fundamentals Part1](./JS/JavaScript_Fundamentals_Part1.md)
