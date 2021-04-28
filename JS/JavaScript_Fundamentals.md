@@ -2,8 +2,6 @@
 
 ## 1. Value(값).
 
----
-
 Value란 기본적으로 Data이며 프로그래밍에서 가장 기본적인 정보 단위이다.
 
 <br/>
@@ -37,8 +35,6 @@ JavaScript는 동적타입 언어로, 런타임에 변수에 할당되는 값에
 <br/>
 
 ## 2. Variable(변수).
-
----
 
 Value와 같은 Data를 저장할 수 있는 공간. Data의 재사용을 가능하게 해준다.
 
@@ -79,8 +75,6 @@ console.log(firstName);
 ```
 
 ## 3. Operator(연산자).
-
----
 
 연산자는 값을 이용한 연산에 사용되는 기호이다.
 
@@ -128,8 +122,6 @@ https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Operato
 
 ## 4. Strings and Template Literals
 
----
-
 ### 4-1. Template Literals
 
 es6부터 도입된 문자열 표기법. 기본적으로 ``(backtick)을 사용하고 변수 또는 표현식은 ${}안에 작성하며 ""와 ''도 혼용 가능하다.
@@ -142,15 +134,11 @@ const jonasNew = `I'm ${firstName}, a ${year - birthYear} years old ${job}!`;
 
 ## 5. If/else
 
----
-
 기존에 알고있는 if/else와 동일.
 
 <br/>
 
 ## 6. Type Conversion and Coercion
-
----
 
 자바스크립트에는 Type Conversion과 Type Coertion이 있다.
 
@@ -193,8 +181,6 @@ console.log("23" > 18); // true
 ```
 
 ## 7. Truthy and Falsy Value
-
----
 
 ### 7-1. Falsy value
 
