@@ -1,2 +1,9 @@
 # TIL
-Today I Learned
+
+Today I Learned.
+
+## JavaScript
+
+---
+
+- [JavaScript Fundamentals](./JS/JavaScript_Fundamentals.md)
