@@ -144,3 +144,67 @@ console.log(Jonas); // (5) ["Jonas", "Schmedtmann", 46, "teacher", Array(3)]
 - Array.indexOf(찾을 요소) : 입력된 요소의 인덱스를 반환. 입력된 요소가 존재하지 않으면 -1 반환.
 
 - Array.includes(찾을 요소) : ES6에서 도입된 메소드, 입력된 요소가 있다면 true, 없다면 false. 비교는 strict equality Operator(===)를 통해서 이루어짐
+
+## 7. Objects
+
+key-value 쌍을 가지는 자료구조. key는 변수명과 같이 작성 value에는 모든 값,표현식이 올 수 있음. key는 property라고도 불린다. 배열과의 가장 큰 차이점은 요소에 접근할 때 인덱스가 아닌 Key의 이름을 활용한다는 것이다.
+
+### 7-1. 선언방법
+
+```js
+const jonas = {
+  firstName: "Jonas",
+  lastName: "Schmedtmenn",
+  age: 2037 - 1991,
+  job: "teacher",
+  friends: ["Michael", "Peter", "Steven"],
+};
+```
+
+### 7-2. Dot vs. Bracket Notation
+
+객체의 요소에 접근하는 방법에는 Dot, Bracket Notation 두가지가 있다. Dot은 객체명.프로퍼티명, Bracket은 객체명["프로퍼티명"]과 같이 작성한다.
+
+```js
+const jonas = {
+  firstName: "Jonas",
+  lastName: "Schmedtmenn",
+  age: 2037 - 1991,
+  job: "teacher",
+  friends: ["Michael", "Peter", "Steven"],
+};
+
+console.log(jonas.lastName); // Schmedtmenn
+console.log(jonas["lastName"]); // Schmedtmenn
+```
+
+Bracket 안에는 표현식을 사용할 수 있다.
+
+```js
+const nameKey = "Name";
+console.log(jonas["first" + nameKey]); // Jonas
+console.log(jonas["last" + nameKey]); // Schmedtmenn
+```
+
+두 Notation 모두 존재하지 않는 프로퍼티에 접근하면 undefined를 반환한다.
+
+```js
+console.log(jonas.location); // undefined
+console.log(jonas["location"]); // undefined
+```
+
+이 두 노테이션을 사용해서 Object에 property를 추가할 수 있다.
+
+```js
+jonas.location = "Portugal"; // location property added
+jonas["instagram"] = "jonas_schmedtman"; // instagram property added
+```
+
+또한 Dot 또는 Bracket을 연속적으로 사용하여 프로퍼티의 프로퍼티로도 접근이 가능하다.
+
+```js
+console.log(jonas["friends"]["length"]); // 3
+console.log(jonas.friends.length); // 3
+```
+
+## 8. Object Methods
