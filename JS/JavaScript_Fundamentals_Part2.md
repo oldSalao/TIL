@@ -42,7 +42,7 @@ console.log(fruitProcessor(3, 2)); //3 2와 Juice with 3 apples and 2 oranges. �
 
 ### 3-1. anonymous function
 
-이름이 없는 함수. 아래 예시의 함수 ( function (birthYear) {...} )는 표현식(Function Expressions)이라고 볼 수 있으며 변수 calcAge는 함수가 된다.
+이름이 없는 함수. 아래 예시의 함수 ( function (birthYear) {...} )는 함수 표현식(Function Expressions)이라고 하며 특별한 값으로 취급되어 이를 변수에 할당하고 변수를 통해 호출할 수 있다.
 
 ```js
 const calcAge = function (birthYear) {
@@ -208,3 +208,70 @@ console.log(jonas.friends.length); // 3
 ```
 
 ## 8. Object Methods
+
+객체, 함수도 Object의 property가 될 수 있다. 함수는 함수표현식을 사용해서 property에 할당될 수 있다. 이를 메소드(Method)라 칭한다.
+
+```js
+const jonas = {
+  birthYear: 1991,
+  calcAge: (birthYear) => 2021 - birthYear + 1, // Method
+};
+
+console.log(jonas.calcAge(jonas.birthYear)); // 31
+console.log(jonas["calcAge"](jonas["birthYear"])); // 31
+```
+
+### 8-1. this
+
+메소드안에서 this 키워드는 기본적으로 메소드를 호출하는 객체를 가리킨다. this 키워드를 통해 메소드는 자신을 프로퍼티로 갖는 Object 내의 다른 프로퍼티에 접근할 수 있다.
+
+```js
+const jonas = {
+  birthYear: 1991,
+  //   calcAge: () => 2021 - this.birthYear + 1, // 화살표 함수에서 this.birthYear는 undefined가 된다.
+  calcAge: function () {
+    console.log(this); // 메소드 호출시 객체 jonas를 콘솔에 출력.(=console.log(jonas);)
+    return 2021 - this.birthYear + 1;
+  },
+};
+console.log(jonas.calcAge()); // 31
+console.log(jonas["calcAge"]()); // 31
+```
+
+this를 활용하면 메소드안에서 새로운 프로퍼티를 추가하는 것도 가능하다.
+
+```js
+const jonas = {
+  birthYear: 1991,
+  calcAge: function () {
+    this.age = 2021 - this.birthYear + 1; // age 프로퍼티 추가
+    return this.age;
+  },
+};
+
+console.log(jonas.calcAge()); // 메소드를 호출하여 age 프로퍼티가 추가되며 31 출력.
+console.log(jonas.age); // 31 출력.
+```
+
+예시
+
+```js
+const jonas = {
+  firstName: "Jonas",
+  lastName: "Schmedtmenn",
+  birthYear: 1991,
+  job: "teacher",
+  friends: ["Michael", "Peter", "Steven"],
+  hasDriversLicense: false,
+  calcAge: function () {
+    return 2021 - this.birthYear + 1;
+  },
+  getSummary: function () {
+    return `${this.firstName} is a ${this.calcAge()}-year old ${
+      this.job
+    }, and he has ${this.hasDriversLicense ? "a" : "no"} driver's license`;
+  },
+};
+
+console.log(jonas.getSummary()); // Jonas is a 31-year old teacher, and he has no driver's license
+```
