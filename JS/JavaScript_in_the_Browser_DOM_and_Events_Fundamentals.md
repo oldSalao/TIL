@@ -13,15 +13,12 @@ DOM(Document Object Model)은 HTML 문서의 구조화된 표현이다. DOM은 J
 
 Javascript에서 DOM에 접근할때는 항상 진입점인 document Object를 거친다.
 
-<<<<<<< HEAD
 #### 예시
 
 ```js
 const myElement = document.querySelector(".message");
 ```
 
-=======
->>>>>>> 8189de694ed8eba7172ae9ba70d7a804c05e258e
 ### 1.2. DOM에 대한 오해
 
 - DOM은 HTML이다?<br/>
