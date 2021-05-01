@@ -82,7 +82,7 @@ console.log(firstName);
 
 ### 3-1. Mathematical Operators.
 
-+, -, \*, ++, -- 등이 있음.
++, -, \*, /, \*\* 등이 있음.
 
 - **로 제곱을 수행할 수 있다.(ex. 2 ** 3 = 8)
 
@@ -96,23 +96,25 @@ console.log(firstName);
 
 ### 3-3. Unary Operators.
 
-!, +, -, ++, --, typeof 등이 있음.
+!, +, -, typeof 등이 있음.
 
 - 단항 연산자로서의 +,- 는 피연산자를 숫자로 변환하며, -는 변환 후 변환된 숫자의 부호를 바꾼다.
 
 <br/>
 
-### 3-4. Comparison Operators.
+### 3-4. Relational operators.
 
-\>, <, <=, >=, ==, ===, !=, !== 등이 있다.
+\>, <, <=, >= 등이 있다.
 
 <br/>
 
 ### 3-5. Logical Operators.
 
-&&, ||, !가 있다.
+&&, || 등이 있다.
 
 <br/>
+
+이 외의 연산자는 https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators 참조.
 
 ### 3-6. Operator Precedence
 

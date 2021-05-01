@@ -244,7 +244,7 @@ this를 활용하면 메소드안에서 새로운 프로퍼티를 추가하는 �
 const jonas = {
   birthYear: 1991,
   calcAge: function () {
-    this.age = 2021 - this.birthYear + 1; // age 프로퍼티 추가
+    this.age = 2021 - this.birthYear + 1; // 메소드 호출시 age 프로퍼티 추가
     return this.age;
   },
 };
