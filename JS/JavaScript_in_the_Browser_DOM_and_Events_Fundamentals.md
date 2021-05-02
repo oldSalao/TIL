@@ -29,7 +29,7 @@ const myElement = document.querySelector(".message");
 
 ## 2. Events
 
-이벤트란 mouse click, key press등 page에서 발생하는 특정 사건을 의미한다. 우리는 event listener를 통해 특정 이벤트가 발생했을 때 이에 반응할 수 있다.
+이벤트란 mouse click, mouse moving, key press등 page에서 발생하는 특정 사건을 의미한다. 우리는 event listener를 통해 특정 이벤트가 발생했을 때 이에 반응할 수 있다.
 
 ### 2-1. addEventListener()
 
