@@ -13,18 +13,44 @@ DOM(Document Object Model)은 HTML 문서의 구조화된 표현이다. DOM은 J
 
 Javascript에서 DOM에 접근할때는 항상 진입점인 document Object를 거친다.
 
-#### 예시
+- querySelector()
 
-```js
-const myElement = document.querySelector(".message");
-```
+  CSS의 selector와 같은 문자열 값을 입력하면 해당하는 element에 접근 가능하다.
+
+  ```js
+  const myElement = document.querySelector(".message");
+  ```
+
+- classList
+
+  element의 class 목록에 접근, add(),remove()등의 method를 활용하여 class 목록을 동적으로 변경할 수 있다.
+
+  ```html
+  <div class="modal hidden">modal</div>
+  ```
+
+  위와같은 element가 있다고 가정할 때 아래와 같은 스크립트를 실행하면,
+
+  ```js
+  document.querySelector(".modal").classList.remove("hidden");
+  ```
+
+  element의 class는 다음과 같이 변경된다.
+
+  ```html
+  <div class="modal">modal</div>
+  ```
+
+  element의 style을 동적으로 변경하고 싶을때, style 프로퍼티로 접근하여 이를 변경하는 방법도 있지만 style 속성이 여러개일때는 원하는 style을 class selector로 묶어서 작성하고 위와같이 classList를 활용하는 것이 좋다.
 
 ### 1.2. DOM에 대한 오해
 
-- DOM은 HTML이다?<br/>
+- DOM은 HTML이다?
+
   DOM은 HTML로부터 생성되지만 이 둘은 다른것이다. 특정한 상황에서 DOM과 HTML문서가 다르게 나타나는 것으로 이를 알 수 있다.
 
-- DOM은 Javascript언어의 한 요소이다?<br/>
+- DOM은 Javascript언어의 한 요소이다?
+
   DOM은 Javascript의 요소가 아니라 Web API의 요소이다. WEB API에 Javascript로 작성된 DOM객체와 프로퍼티가 존재하는 것이다. 즉, Javascript는 Web API를 통해서 DOM에 접근하는 것으로 볼 수 있다.
 
 ## 2. Events
