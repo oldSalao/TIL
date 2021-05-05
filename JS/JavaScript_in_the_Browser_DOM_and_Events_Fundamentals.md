@@ -23,7 +23,7 @@ Javascript에서 DOM에 접근할때는 항상 진입점인 document Object를 �
 
 - classList
 
-  element의 class 목록에 접근, add(),remove()등의 method를 활용하여 class 목록을 동적으로 변경할 수 있다. 또한 contains()를 활용해 특정 클래스를 포함하고 있는지 여부를 알 수 있다.
+  element의 class 목록에 접근, add(), remove(), toggle()등의 method를 활용하여 class 목록을 동적으로 변경할 수 있다. 또한 contains()를 활용해 특정 클래스를 포함하고 있는지 여부를 알 수 있다.
 
   ```html
   <div class="modal hidden">modal</div>
@@ -51,7 +51,7 @@ Javascript에서 DOM에 접근할때는 항상 진입점인 document Object를 �
 
 querySelectorAll은 인자로 주어진 속성값을 갖는 모든 요소를 NodeList로 반환하며 getElementsByClassName은 인자로 주어진 클래스명을 갖는 모든 요소를 HTMLCollection의 형태로 반환한다.
 
-### 1-3. DOM에 대한 오해
+### 1-4. DOM에 대한 오해
 
 - DOM은 HTML이다?
 
