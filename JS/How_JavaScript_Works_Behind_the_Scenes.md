@@ -43,7 +43,9 @@
 
 ### 2-1. 자바스크립트 엔진의 구조
 
-모든 자바스크립트 엔진은 콜스택과 힙을 포함하고 있다. 콜스택은 우리의 코드가 execution context를 사용하여 실제로 실행되는 곳이며 힙은 애플리케이션에 필요한 모든 객체를 저장하는 구조화되지 않은 메모리 영역이다.
+![](./common/images/js-engine-structure.png)
+
+모든 자바스크립트 엔진은 콜스택과 힙을 포함하고 있다. 콜스택은 우리의 코드가 execution context를 통해 실제로 실행되는 곳이며 힙은 애플리케이션에 필요한 모든 객체를 저장하는 구조화되지 않은 메모리 영역이다.
 
 ### 2-2. 컴파일러와 인터프리터
 
@@ -75,3 +77,31 @@
 Callback queue : 모든 실행 준비된 콜백함수( ex. event handler function )를 포함하는 자료구조. 콜스택이 비어있을 때 콜백큐에 있는 콜백함수가 콜스택으로 전달되고 그 결과 실행이 된다. 이런 과정을 event loop라고 한다.
 
 ## 3. Execution Contexts and The Call Stack
+
+Execution Contexts는 코드가 실행되고 있는 구역, 범위에 대한 추상적인 개념이다. Execution Contexts는 일부 코드가 실행되는 데 필요한 모든 정보를 저장한다. 코드를 실행하는 과정은 아래와 같다.
+
+1. global execution context 생성. (global execution context : 특정 함수안에서 실행되는 코드가 아닌 코드들(top-level code)이 실행되는 구역)
+
+2. global execution context 안에서 top-level code 실행.
+
+3. 함수를 실행하고 콜백함수를 기다린다. ( 함수가 실행될때마다 각각의 함수에 대한 execute context가 만들어진다. )
+
+### 3-1. What's inside execution context?
+
+아래와 같은 요소들이 컨텍스트의 creation phase에 생성된다.
+
+1. Variable Enviroment : 아래와 같은 정보들이 저장된다.
+
+   - 변수 선언.
+   - 함수 선언.
+   - arguments object. : 실행 컨텍스트 내에서 함수 호출 시 전달된 arguments에 대한 정보를 배열의 형태로 저장하는 것.
+
+2. Scope chain : 현재 함수의 외부에 위치한 변수에 대한 참조로 이루어져있다.
+
+3. this keyword
+
+화살표 함수가 실행되는 실행 컨텍스트는 arguments object와 this keyword를 갖지 않는다. 하지만 이들은 가장 가까운 일반 함수 부모의 arguments object와 this keyword를 사용할 수도 있다.
+
+### 3-2. Call stack
+
+콜스택은 기본적으로 프로그램 실행의 위치를 추적하기위해 실행 컨텍스트가 쌓이는 장소이다. 가장 마지막에 push된 실행 컨텍스트부터 순차적으로 실행하며 해당 작업이 완료될 때까지 다음 실행 컨텍스트는 실행하지 않는다. 마지막으로 실행되는 실행 컨텍스트는 전역 실행 컨텍스트이다. 전역 실행 컨텍스트는 브라우저 탭을 닫는 등의 특정한 상황이 아니라면 계속 콜스택에 머무른다.
