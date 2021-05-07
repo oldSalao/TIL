@@ -174,8 +174,8 @@ function calcAge(birthYear) {
 
       console.log(str); // Oh, and you're a millenial, Steven
 
+      //함수는 엄격모드에서는 block scoped, 엄격모드가 아니라면 function scoped
       function add(a, b) {
-        //엄격모드에서는 block scoped, 엄격모드가 아니라면 function scoped
         return a + b;
       }
 
@@ -202,3 +202,13 @@ calcAge(1996);
 ### 4-3. Scope chain vs Call stack
 
 함수의 호출에 따라 구조가 결정되는 콜스택과 달리 스코프 체인은 함수의 호출과는 관계없이 함수의 선언 위치에 따라 구조가 결정된다.
+
+## 5. Variable Environment: Hoisting and The TDZ
+
+### 5-1. Hoisting
+
+실행되기 전(creation phase)에 코드에서 변수 선언을 탐색하고 variable environment object에 각각의 선언된 변수들에 대한 프로퍼티를 생성하는 것을 호이스팅이라고 한다. 이로인해 코드에서 일부 유형의 변수들을 실제로 선언되기 전에 접근하고 사용할 수 있다. 즉, 변수들이 자신이 포함되어있는 스코프의 최상단으로 끌어 올려지는 현상이 나타난다.
+
+![](./common/images/hoisting.png)
+
+기본적으로 var 변수와 함수정의(함수표현식,화살표함수 제외)는 hoisting된다. 호이스팅된 함수는 문제없이 호출하는등 사용이 가능하다. 하지만 호이스팅된 var 변수는 사용시 값으로 undefined를 지닌다. 이는 자바스크립트의 일종의 버그로 취급되며 우리가 var를 잘 사용하지 않는 이유이며 es6에서 let과 const 키워드가 나타나게된 이유이기도 하다. let,const 변수는 기술적으로는 호이스팅이 되지만 실제 사용시에는 그렇지않으며 사용시 값이 uninitialized라고 나타난다. 이러한 상황이 발생하는 변수가 선언되기 전의 장소(포함된 블록의 시작부분부터 선언이 되기까지의 공간)를 TDZ(Temporal dead zone)라고 표현한다. 함수표현식,화살표함수는 var와 let,const 중 어떤 키워드로 선언된 변수에 할당 되었는지에 따라 호이스팅 여부가 결정된다.
