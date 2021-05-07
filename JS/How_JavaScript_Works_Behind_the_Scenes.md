@@ -212,3 +212,96 @@ calcAge(1996);
 ![](./common/images/hoisting.png)
 
 기본적으로 var 변수와 함수정의(함수표현식,화살표함수 제외)는 hoisting된다. 호이스팅된 함수는 문제없이 호출하는등 사용이 가능하다. 하지만 호이스팅된 var 변수는 사용시 값으로 undefined를 지닌다. 이는 자바스크립트의 일종의 버그로 취급되며 우리가 var를 잘 사용하지 않는 이유이며 es6에서 let과 const 키워드가 나타나게된 이유이기도 하다. let,const 변수는 기술적으로는 호이스팅이 되지만 실제 사용시에는 그렇지않으며 사용시 값이 uninitialized라고 나타난다. 이러한 상황이 발생하는 변수가 선언되기 전의 장소(포함된 블록의 시작부분부터 선언이 되기까지의 공간)를 TDZ(Temporal dead zone)라고 표현한다. 함수표현식,화살표함수는 var와 let,const 중 어떤 키워드로 선언된 변수에 할당 되었는지에 따라 호이스팅 여부가 결정된다.
+
+Hoisting 예시
+
+```js
+"use strict";
+
+console.log(me); // undefined
+
+console.log(job); // Uncaught ReferenceError: Cannot access 'job' before initialization
+
+console.log(year); // Uncaught ReferenceError: Cannot access 'year' before initialization
+
+var me = "Jonas";
+let job = "teacher";
+const year = 1991;
+```
+
+```js
+"use strict";
+
+console.log(addDecl(2, 3)); // 5
+
+console.log(addExpr(4, 6)); // Uncaught ReferenceError: Cannot access 'addExpr' before initialization
+
+console.log(addArrow(6, 3)); // Uncaught ReferenceError: Cannot access 'addArrow' before initialization
+
+console.log(addArrowVar(4, 6)); // Uncaught TypeError: addArrowVar is not a function -> undefine(4,6)과 같다.
+
+function addDecl(a, b) {
+  return a + b;
+}
+
+const addExpr = function (a, b) {
+  return a + b;
+};
+
+const addArrow = (a, b) => a + b;
+
+var addArrowVar = (a, b) => a + b;
+```
+
+var로 선언된 변수는 window 오브젝트에 프로퍼티를 생성하지만 let,const는 생성하지 않는다.
+
+```js
+"use strict";
+
+var x = 1;
+let y = 2;
+const z = 3;
+
+console.log(x === window.x); // true
+console.log(y === window.y); // false
+console.log(z === window.z); // false
+```
+
+## 6. The this Keyword
+
+this는 모든 실행컨텍스트(모든 함수)에 생성되는 특수한 변수이다. this는 this가 사용된 함수의 소유자를 가리킨다. this의 값은 정적인 값이 아니며 이는 함수의 호출 방법에따라 달라지고 함수가 선언될 때에만 값이 할당된다.
+
+### 6-1. 함수의 호출 방법에 따라 달라지는 this
+
+- Method
+
+  Method를 호출했을때의 this는 Method를 호출하는 객체를 가리킨다.
+
+  ```js
+  const jonas = {
+    name: "Jonas",
+    year: 1996,
+    calcAge: function () {
+      return 2022 - this.year; //calcAge Method를 호출 시 this.year는 1989가 된다.
+    },
+  };
+  jonas.calcAge(); // 26
+  ```
+
+- Simple function call
+
+  엄격모드에서 Method가 아닌 일반 함수에서 사용된 this의 값은 undefined이다. 엄격모드가 아니라면 window 객체를 가리킨다(브라우저 안에서의 경우).
+
+- Arrow functions
+
+  화살표 함수는 엄밀히 말하자면 함수의 호출방식은 아니지만 짚고 넘어가야한다. 화살표 함수는 그들 자신의 this를 갖지 않는다. 화살표 함수 내에서 this를 사용하면 this의 값은 화살표 함수를 감싸고있는 부모 함수의 this 값을 가진다. 이를 lexical this keyword라고 한다.
+
+- Event listener
+
+  Event listener에서 사용되는 this는 핸들러가 붙여진 DOM 요소를 가리킨다.
+
+- new, call, apply, bind
+
+  추후 다룰 예정...
+
+정리하자면 this는 this가 속해있는 함수 스스로를, 또한 속해있는 variable environment 스스로를 가리키지 않는다.
