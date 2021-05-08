@@ -148,7 +148,7 @@ Execution Contexts는 코드가 실행되고 있는 구역, 범위에 대한 추
 
 - block scope
 
-  ES6에서 등장함. 모든 블록은 스코프를 생성한다. block scope 안에서 선언된 변수는 오직 해당 블록 내부에서만 접근 가능(엄격모드에서는 함수도 포함). 그러나 let과 const 변수에만 해당한다.
+  ES6에서 등장함. 모든 블록은 스코프를 생성한다. block scope 안에서 선언된 변수는 오직 해당 블록 내부에서만 접근 가능(엄격모드에서는 정의된 함수도 block scoped 엄격모드가 아니라면 var 변수와 동일하게 function scoped). 그러나 let과 const 변수에만 해당한다.
 
 ### 4-2. Scope chain
 
@@ -269,7 +269,7 @@ console.log(z === window.z); // false
 
 ## 6. The this Keyword
 
-this는 모든 실행컨텍스트(모든 함수)에 생성되는 특수한 변수이다. this는 this가 사용된 함수의 소유자를 가리킨다. this의 값은 정적인 값이 아니며 이는 함수의 호출 방법에따라 달라지고 함수가 선언될 때에만 값이 할당된다.
+this는 모든 실행컨텍스트(모든 함수)에 생성되는 특수한 변수이다. this는 this가 사용된 함수의 소유자를 가리킨다. this의 값은 정적인 값이 아니며 이는 함수의 호출 방법에따라 달라지며 또한 함수가 호출될 때에만 값이 할당된다.
 
 ### 6-1. 함수의 호출 방법에 따라 달라지는 this
 
@@ -278,11 +278,13 @@ this는 모든 실행컨텍스트(모든 함수)에 생성되는 특수한 변�
   Method를 호출했을때의 this는 Method를 호출하는 객체를 가리킨다.
 
   ```js
+  "use strict";
+
   const jonas = {
     name: "Jonas",
     year: 1996,
     calcAge: function () {
-      return 2022 - this.year; //calcAge Method를 호출 시 this.year는 1989가 된다.
+      return 2022 - this.year; //calcAge Method를 호출 시 this.year는 jonas.year 즉, 1996이다.
     },
   };
   jonas.calcAge(); // 26
@@ -292,9 +294,29 @@ this는 모든 실행컨텍스트(모든 함수)에 생성되는 특수한 변�
 
   엄격모드에서 Method가 아닌 일반 함수에서 사용된 this의 값은 undefined이다. 엄격모드가 아니라면 window 객체를 가리킨다(브라우저 안에서의 경우).
 
+  ```js
+  "use strict";
+
+  const calcAge = function (birthYear) {
+    console.log(2022 - birthYear); // 26
+    console.log(this); // undefined
+  };
+  calcAge(1996);
+  ```
+
 - Arrow functions
 
-  화살표 함수는 엄밀히 말하자면 함수의 호출방식은 아니지만 짚고 넘어가야한다. 화살표 함수는 그들 자신의 this를 갖지 않는다. 화살표 함수 내에서 this를 사용하면 this의 값은 화살표 함수를 감싸고있는 부모 함수의 this 값을 가진다. 이를 lexical this keyword라고 한다.
+  화살표 함수는 엄밀히 말하자면 함수의 호출방식은 아니지만 짚고 넘어가야한다. 화살표 함수는 그들 자신의 this를 갖지 않는다. 화살표 함수 내에서 this를 사용하면 this의 값은 화살표 함수를 감싸고있는 부모 함수 또는 부모 스코프의 this 값을 가진다. 이를 lexical this keyword라고 한다.
+
+  ```js
+  "use strict";
+
+  const calcAgeArrow = (birthYear) => {
+    console.log(2022 - birthYear); // 26
+    console.log(this); // window
+  };
+  calcAgeArrow(1996);
+  ```
 
 - Event listener
 
@@ -305,3 +327,117 @@ this는 모든 실행컨텍스트(모든 함수)에 생성되는 특수한 변�
   추후 다룰 예정...
 
 정리하자면 this는 this가 속해있는 함수 스스로를, 또한 속해있는 variable environment 스스로를 가리키지 않는다.
+
+예시
+
+```js
+"use strict";
+
+const jonas = {
+  year: 1996,
+  calcAge: function () {
+    console.log(this); // jonas
+    console.log(2022 - this.year); // 26
+  },
+};
+
+jonas.calcAge();
+
+const matilda = {
+  year: 2017,
+};
+
+matilda.calcAge = jonas.calcAge;
+
+console.log(matilda);
+matilda.calcAge(); // 여기서 calcAge의 this는 matilda가 된다. this는 동적인 값이다.
+
+const f = jonas.calcAge;
+
+f(); // 여기서 this는 undefined가 된다. this.year는 에러!
+```
+
+## 7. Regular Functions vs. Arrow Functions
+
+화살표 함수를 method로 사용하면 this는 전역 객체 즉, window를 가리키므로 method는 함수 표현식을 사용하도록 하자.
+
+예시
+
+```js
+"use strict";
+
+var firstName = "Matilda"; // var로 선언된 변수는 window 객체에 프로퍼티(firstName : "Matilda")를 생성한다.
+
+const jonas = {
+  firstName: "Jonas",
+  year: 1996,
+  calcAge: function () {
+    console.log(this); // jonas
+    console.log(2022 - this.year); // 26
+  },
+  greet: () => {
+    console.log(this); // 여기서 this는 window가 된다. object의 {}는 코드 블록이 아니므로 greet 함수의 부모 스코프는 global scope가 되기 때문이다.
+    console.log(`Hey ${this.firstName}`); // this.firstName은 window 객체의 firstName 프로퍼티가 된다.
+  },
+};
+
+jonas.greet();
+```
+
+메소드 안에서 정의된 함수에서의 this를 사용하는 방법.
+
+```js
+"use strict";
+
+const jonas = {
+  firstName: "Jonas",
+  year: 1996,
+  calcAge: function () {
+    console.log(this); // jonas
+    console.log(2022 - this.year); // 26
+
+    // Solution 1
+
+    // const self = this; // method 안에서 일반 함수를 정의하고 호출할 때, 그 함수의 this는 undefined가 되므로 따로 변수 하나를 만들어 this를 할당해두고 활용한다.
+    // const isMillenial = function () {
+    //   console.log(self.year >= 1981 && self.year <= 1996);
+    // };
+    // isMillenial();
+
+    // Solution 2
+
+    const isMillenial = () => {
+      console.log(this.year >= 1981 && this.year <= 1996); // 화살표 함수의 this는 부모 스코프의 this 키워드와 동일하므로 해당 this는 jonas가 된다.
+    };
+    isMillenial();
+  },
+  greet: () => {
+    console.log(this); // window
+    console.log(`Hey ${this.firstName}`); // Hey undefined
+  },
+};
+
+jonas.greet();
+jonas.calcAge();
+```
+
+일반 함수에서만 사용가능한 arguments 키워드
+
+```js
+"use strict";
+
+const addExpr = function (a, b) {
+  console.log(arguments);
+  return a + b;
+};
+
+addExpr(2, 5); // Arguments(2) [2, 5, callee: (...), Symbol(Symbol.iterator): ƒ]
+addExpr(2, 5, 8, 12); // Arguments(4) [2, 5, 8, 12, callee: (...), Symbol(Symbol.iterator): ƒ]
+
+const addArrow = (a, b) => {
+  console.log(arguments);
+  return a + b;
+};
+
+addArrow(2, 5); // Uncaught ReferenceError: arguments is not defined
+```
