@@ -441,3 +441,125 @@ const addArrow = (a, b) => {
 
 addArrow(2, 5); // Uncaught ReferenceError: arguments is not defined
 ```
+
+## 8. Primitives vs. Objects (Primitive Types vs. Reference Types)
+
+원시값과 객체는 메모리,메모리 관리의 관점에서 각각 Primitive Types(원시타입), Reference Types(참조타입)라고 한다. 이 두 타입은 서로 다른 방식으로 메모리에 저장되기 때문이다. 모든 참조타입의 값은 힙 메모리에 저장이 되는 반면에 원시타입의 값들은 콜스택에 저장된다.
+
+### 8-1. Primitive types
+
+코드와 함께 원시타입의 값이 메모리에 저장되는 과정을 알아보자.
+
+```js
+let age = 30;
+let oldAge = age;
+age = 31;
+console.log(age);
+console.log(oldAge);
+```
+
+위와같은 코드를 실행했을때 콜스택에서는 다음과 같은 일이 발생한다.
+
+```js
+let age = 30;
+```
+
+1. 변수명 age를 식별자로써 생성한다.
+
+2. 특정 주소를 갖는 메모리의 한 부분에 값 30을 저장한다. (여기서 주소는 0001을 예로 듦.)
+
+3. 식별자 age가 주소 0001을 가리킨다. ( 여기서 값이 아닌 값을 저장하고있는 메모리주소를 가리킨다는 것에 주목하자. )
+
+```js
+let oldAge = age;
+```
+
+1. 식별자 oldAge 생성.
+
+2. oldAge가 age와 마찬가지로 주소 0001을 가리킨다.
+
+```js
+age = 31;
+```
+
+1. 새로운 주소의 메모리에(0002이라고 하겠음.)에 값 31을 저장.
+
+2. age가 더 이상 0001을 가리키지 않고 0002를 가리키게 됨. ( 특정 메모리주소에 저장된 값은 불변성을 띄기 때문에 기존의 주소에 있던 값이 변경되는 것이 아니라 새로운 주소에 새로운 값을 저장한다. )
+
+### 8-2. Reference Types
+
+이번에는 코드와 함께 참조타입의 값이 메모리에 저장되는 과정을 알아보자.
+
+```js
+const me = {
+  name: "Jonas",
+  age: 30,
+};
+const friend = me;
+friend.age = 27;
+
+console.log(me); // {name: "Jonas", age: 27}
+console.log(friend); // {name: "Jonas", age: 27}
+```
+
+위의 코드를 실행하면 아래와 같은 과정을 거친다.
+
+```js
+const me = {
+  name: "Jonas",
+  age: 30,
+};
+```
+
+1. 새로운 객체를 생성하면 힙 메모리의 특정 주소에 해당 객체에 대한 값을 저장한다.( 예를들어 주소 D30F에 {name: "Jonas", age: 27}라는 값이 저장되었다고 하자.)
+
+2. 콜스택에 me라는 식별자가 생성된다.
+
+3. me 식별자는 힙에 저장된 객체의 메모리 주소 D30F를 직접적으로 가리키는것이 아니라 콜스택에 별도의 메모리 주소( 0003이라고 예를 들겠다. )에 객체의 힙 메모리 주소 D30F를 저장하여 가리키게 하고, 해당 메모리 주소(0003)를 가리켜 메모리에 저장된 객체의 값을 간접적으로 가리키게 된다. 즉, 콜스택 메모리(0003)에 저장된 객체의 주소값(D30F)을 통해 그 주소에 저장된 객체를 참조하는것이다.
+
+```js
+const friend = me;
+```
+
+1. 콜스택에 friend 식별자가 생성됨.
+
+2. friend 식별자는 me와 마찬가지로 객체를 저장하고 있는 힙 메모리주소(D30F)를 값으로 갖는 콜스택 메모리 주소(0003)를 가리킨다.
+
+```js
+friend.age = 27;
+
+console.log(me); // {name: "Jonas", age: 27}
+console.log(friend); // {name: "Jonas", age: 27}
+```
+
+1. 힙 메모리에 저장되어 있는 객체의 프로퍼티 age의 값이 27로 변경된다.
+
+2. me와 friend는 같은 객체를 참조하고 있으므로 출력했을때 프로퍼티 age의 값이 모두 27인것을 알 수 있다.
+
+추가적으로 위의 me, friend 변수는 모두 const이지만 값이 변경될 수 있는 이유는 힙에 저장된 객체의 프로퍼티 값이 변경된 것이지 콜스택에서 두 식별자가 다른 주소를 가리키게 된것이 아니기 때문이다. 즉, const는 콜스택 안에서 가리키는 값이 변경되는 것을 막는것이지 참조하는 힙에 저장된 객체의 값이 변경되는 것은 문제가 되지 않는다.
+
+위의 모든 과정을 그림으로 표현하면 아래와 같다.
+![](./common/images/primitive.png)
+
+### 8-3. 객체를 복사하는법
+
+- Object.assign() 사용
+
+  Object.assign()은 두 객체를 병합하여 새로운 객체를 만든다. 하지만 만약 복사 대상 객체의 프로퍼티에 객체가 있다면 해당 객체는 복사되지 않는다. 이러한 복사를 Shallow copy(얕은 복사)라고 한다.
+
+```js
+const jessica = {
+  firstName: "Jessica",
+  lastName: "Williams",
+  age: 27,
+};
+
+const jessicaCopy = Object.assign({}, jessica);
+
+jessicaCopy.lastName = "Davis";
+jessicaCopy.family.push("Jack");
+
+//얕은 복사를 했기 때문에 객체가 아닌 프로퍼티는 변경이 잘 이루어졌지만 배열인 family 프로퍼티는 동일한것을 볼 수 있다.
+console.log(jessica); // {firstName: "Jessica", lastName: "Williams", age: 27, family: Array(3)}
+console.log(jessicaCopy); // {firstName: "Jessica", lastName: "Davis", age: 27, family: Array(3)}
+```
