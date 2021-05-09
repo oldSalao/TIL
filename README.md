@@ -13,6 +13,8 @@ Today I Learned.
 - [How JavaScript Works
   Behind the Scenes](./JS/How_JavaScript_Works_Behind_the_Scenes.md)
 
+- [Data Structures and Modern Operators](./JS/Data_Structures_and_Modern_Operators.md)
+
 ## Java
 
 ## ORACLE
