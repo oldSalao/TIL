@@ -93,3 +93,116 @@ console.log(p, q, r); // 8 9 1
 ```
 
 ### 1-2. Objects
+
+객체의 구조 분해 할당은 아래와 같이 이루어진다.
+
+```js
+const restaurant = {
+  name: "Classico Italiano",
+  location: "Via Angelo Tavanti 23, Firenze, Italy",
+  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+  mainMenu: ["Pizza", "Pasta", "Risotto"],
+  order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+
+  openingHours: {
+    thu: {
+      open: 12,
+      close: 22,
+    },
+    fri: {
+      open: 11,
+      close: 23,
+    },
+    sat: {
+      open: 0, // Open 24 hours
+      close: 24,
+    },
+  },
+};
+```
+
+위와 같은 객체가 있을때,
+
+```js
+const { name, openingHours, categories } = restaurant;
+console.log(name, openingHours, categories); // Classico Italiano {thu: {…}, fri: {…}, sat: {…}} (4) ["Italian", "Pizzeria", "Vegetarian", "Organic"]
+```
+
+위처럼 배열의 구조 분해와 다르게 객체는 index를 사용하지 않기 때문에 변수로 할당할 프로퍼티 명을 좌변의 {} 안에 작성하고 우변에 객체를 작성하면 된다.
+
+```js
+const {
+  name: restaurantName,
+  openingHours: hours,
+  categories: tags,
+} = restaurant;
+
+console.log(restaurantName, hours, tags); // Classico Italiano {thu: {…}, fri: {…}, sat: {…}} (4) ["Italian", "Pizzeria", "Vegetarian", "Organic"]
+```
+
+변수명을 임의로 정하고 싶다면 좌변을 {프로퍼티명:변수명,...}과 같이 작성한다.
+
+```js
+const { menu = [], starterMenu: starters = [] } = restaurant;
+
+console.log(menu, starters);
+```
+
+위처럼 =을 사용하여 default값을 설정할 수 있다. {}안에 작성한 프로퍼티가 존재하지 않는다면 ( 존재한다면 default값은 적용되지 않는다. ) 해당 변수는 default값을 가지게 된다.
+
+```js
+let a = 111;
+let b = 999;
+
+const obj = { a: 23, b: 7, c: 14 };
+
+// { a, b } = obj; //error
+({ a, b } = obj);
+console.log(a, b); // 23 7
+```
+
+배열의 구조 분해 할당과 마찬가지로 객체를 사용하여 변수의 값을 바꿀 수 있다. 괄호를 사용해야 한다는 것에 주의해야한다.
+
+```js
+const {
+  fri: { open: o, close: c },
+} = openingHours;
+console.log(o, c);
+```
+
+중첩된 배열을 구조 분해할 수 있는것과 마찬가지로 객체도 가능한데, : 이후 {}를 중복으로 사용하면 된다.
+
+```js
+orderDelivery: function ({
+    starterIndex = 1,
+    mainIndex = 0,
+    time = '20:00',
+    address,
+  }) {
+    console.log(starterIndex);
+    console.log(
+      `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
+    );
+  },
+```
+
+restaurants 객체의 method를 위와같이 변경하면 객체를 arguments로 전달함과 동시에 구조 분해가 이루어진다. 또한 parameter에 = 를 사용하여 default 값을 설정할 수 있다.
+
+```js
+restaurant.orderDelivery({
+  time: "22:30",
+  address: "Via del sole, 21",
+  mainIndex: 2,
+  starterIndex: 2,
+}); // Order received! Garlic Bread and Risotto will be delivered to Via del sole, 21 at 22:30
+
+restaurant.orderDelivery({
+  address: "Via del sole, 21",
+  starterIndex: 2,
+}); // Order received! Garlic Bread and Pizza will be delivered to Via del sole, 21 at 20:00
+```
+
+## 2. The Spread Operator (...)
