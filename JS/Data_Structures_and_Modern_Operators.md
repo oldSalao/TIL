@@ -388,3 +388,34 @@ restaurant.orderPizza && restaurant.orderPizza("mushrooms", "spinach");
 ```
 
 ## 5. The Nullish Coalescing Operator (??)
+
+Nullish value란 null과 undefined를 의미한다.(0과 ''은 아님.) ??은 Nullish Coalescing Operator라고 하며 es2020에서 제시되었으며 ||과 같은 기능을 하지만 0과 ''을 truthy value 취급한다.
+
+예시.
+
+```js
+restaurant.numGuests = 0;
+// Nullish : null and undefined (Not 0 or ``)
+const guestCorrect = restaurant.numGuests ?? 10; // 0
+console.log(guestCorrect);
+```
+
+## 6. Looping Arrays: The for-of Loop
+
+배열의 모든 요소에 대해 반복적인 작업을 해야할 때 활용하기 좋다. 문법은 아래 코드를 확인하자. for문 안에서 menu배열의 모든 요소가 순서대로 item 변수에 할당이 되고 우리는 이를 사용할 수 있게 된다.
+
+```js
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+
+for (const item of menu) {
+  console.log(item); // menu 배열의 모든 요소 출력.
+}
+```
+
+배열의 entries 메소드를 활용하여 모든 요소로부터 인덱스와 값으로 이루어진 배열을 얻을 수 있다.
+
+```js
+for (const item of menu.entries()) {
+  console.log(item);
+}
+```
