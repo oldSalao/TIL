@@ -552,7 +552,7 @@ const restaurant = {
 []를 사용하여 프로퍼티명을 수동으로 작성하는 것이 아닌 계산을 통해 지어낼 수 있다.
 
 ```js
-weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 const openingHours = {
   [weekdays[3]]: {
@@ -571,3 +571,84 @@ const openingHours = {
 ```
 
 ## 8. Optional Chaining (?.)
+
+Optional Chaining 연산자(?.)는 프로퍼티에 접근할 때 사용된 객체가 nullish value라면 곧바로 undefined를 반환하게하는 연산자이다. Nullish Coalescing Operator(??)와 함께 활용하기 좋다.
+
+예시
+
+```js
+console.log(restaurant.openingHours.mon?.open); // restaurant.openingHours.mon 프로퍼티가 nullish value라면 undefined 반환, 그렇지 않다면 open 프로퍼티 반환.
+console.log(restaurant.openingHours?.mon?.open); // 중첩된 객체의 프로퍼티에 접근할 때 연속해서 사용 가능하다.
+
+const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+for (const day of days) {
+  const open = restaurant.openingHours[day]?.open ?? "closed"; // restaurant.openingHours[day]가 Nullish value라면 undefined를 반환하고 ??에 의해서 default value로 closed가 변수에 할당 됨.
+  console.log(`On ${day}, we open at ${open}`);
+}
+```
+
+Method에 적용된 예시
+
+```js
+console.log(restaurant.order?.(0, 1) ?? "Method does not exist"); //["Focaccia", "Pasta"].
+console.log(restaurant.orderRisotto?.(0, 1) ?? "Method does not exist"); // Method does not exist.
+```
+
+배열에 적용된 예시
+
+```js
+const users = [{ name: "Jonas", email: "hello@jonas.io" }];
+
+console.log(users[0]?.name ?? "User array empty"); // Jonas
+console.log(users[1]?.name ?? "User array empty"); // User array empty
+```
+
+## 9. Looping Objects: Object Keys, Values, and Entries
+
+객체에는 객체의 키, 값, 엔트리를 요소로 갖는 배열을 생성하는 메소드가 존재한다.
+
+### 9-1. Object.keys()
+
+객체의 키를 요소로하는 배열 생성.
+
+```js
+const properties = Object.keys(openingHours);
+
+console.log(properties); // ["thu", "fri", "sat"]
+
+let openStr = `We are Open on ${properties.length} days: `;
+
+for (const day of properties) {
+  openStr += `${day}, `;
+}
+
+console.log(openStr); // We are Open on 3 days: thu, fri, sat,
+```
+
+### 9-2. Object.Values()
+
+객체의 값을 요소로 하는 배열 생성.
+
+```js
+const values = Object.values(openingHours);
+
+console.log(values); // [{open: 12, close: 22},{open: 11, close: 23},{open: 0, close: 24}]
+```
+
+### 9-2. Object.Entries()
+
+객체의 키,값으로 이루어진 배열을 요소로 하는 배열 생성.
+
+```js
+const entries = Object.entries(openingHours);
+
+console.log(entries); // [["thu", {open: 12, close: 22}], ["fri", {open: 11, close: 23}], ["sat", {open: 0, close: 24}]]
+
+for (const [day, { open, close }] of entries) {
+  console.log(`On ${day} we open in ${open} and close in ${close}`);
+}
+// On thu we open in 12 and close in 22
+//On fri we open in 11 and close in 23
+//On sat we open in 0 and close in 24
+```
