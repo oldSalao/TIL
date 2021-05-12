@@ -412,10 +412,162 @@ for (const item of menu) {
 }
 ```
 
-배열의 entries 메소드를 활용하여 모든 요소로부터 인덱스와 값으로 이루어진 배열을 얻을 수 있다.
+배열의 entries 메소드를 활용하여 모든 요소로부터 인덱스와 요소의 값으로 이루어진 배열을 얻을 수 있다.
 
 ```js
 for (const item of menu.entries()) {
   console.log(item);
 }
+//(2) [0, "Focaccia"]
+// [1, "Bruschetta"]
+// [2, "Garlic Bread"] ....
 ```
+
+이를 아래와 같이 구조 분해 할당과 함께 사용할 수도 있다.
+
+```js
+for (const [i, el] of menu.entries()) {
+  console.log(`${i + 1} : ${el}`);
+}
+//1 : Focaccia
+//2 : Bruschetta
+//3 : Garlic Bread...
+```
+
+## 7. Enhanced Object Literals
+
+우선 아래와 같이 객체가 선언이 되어 있다고 한다.
+
+```js
+const restaurant = {
+  name: "Classico Italiano",
+  location: "Via Angelo Tavanti 23, Firenze, Italy",
+  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+  mainMenu: ["Pizza", "Pasta", "Risotto"],
+  order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+
+  openingHours: {
+    thu: {
+      open: 12,
+      close: 22,
+    },
+    fri: {
+      open: 11,
+      close: 23,
+    },
+    sat: {
+      open: 0, // Open 24 hours
+      close: 24,
+    },
+  },
+  orderDelivery: function ({
+    starterIndex = 1,
+    mainIndex = 0,
+    time = "20:00",
+    address,
+  }) {
+    console.log(starterIndex);
+    console.log(
+      `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
+    );
+  },
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}`);
+  },
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  },
+};
+```
+
+여기서 객체안의 객체 즉, openingHours 프로퍼티를 분리하고 별개의 변수에 할당하고 포함되길 원하는 객체의 내부에 변수명을 작성하면 해당 변수(객체)를 프로퍼티로 갖게된다.
+
+예시
+
+```js
+const openingHours = {
+  thu: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0, // Open 24 hours
+    close: 24,
+  },
+};
+
+const restaurant = {
+  name: "Classico Italiano",
+  location: "Via Angelo Tavanti 23, Firenze, Italy",
+  categories: ["Italian", "Pizzeria", "Vegetarian", "Organic"],
+  starterMenu: ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad"],
+  mainMenu: ["Pizza", "Pasta", "Risotto"],
+  order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+  orderDelivery: function ({
+    starterIndex = 1,
+    mainIndex = 0,
+    time = "20:00",
+    address,
+  }) {
+    console.log(starterIndex);
+    console.log(
+      `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
+    );
+  },
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}`);
+  },
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  },
+
+  //openingHours: openingHours, // es6이전에 사용하던 방법.
+  openingHours, // es6 enhanced object literals
+};
+```
+
+메소드 프로퍼티를 선언할 때 기존처럼 프로퍼티명:함수표현식의 형태가 아닌 함수정의의 형태로 메소드 프로퍼티를 선언할 수 있다.
+
+```js
+///////////////////////////////////////////////////객체 내부라고 가정.
+  // order: function (starterIndex, mainIndex) {
+  //   return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  // },
+  order(starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  }
+```
+
+[]를 사용하여 프로퍼티명을 수동으로 작성하는 것이 아닌 계산을 통해 지어낼 수 있다.
+
+```js
+weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+const openingHours = {
+  [weekdays[3]]: {
+    open: 12,
+    close: 22,
+  },
+  [weekdays[4]]: {
+    open: 11,
+    close: 23,
+  },
+  [`day-${2 + 4}`]: {
+    open: 0,
+    close: 24,
+  },
+};
+```
+
+## 8. Optional Chaining (?.)
