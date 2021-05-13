@@ -205,7 +205,7 @@ restaurant.orderDelivery({
 
 ## 2. The Spread Operator (...)
 
-es6부터 제시된 연산자. iterable object(array, string, map, set. object는 불가능. es2018부터는 object도 사용 가능. )에 사용가능하다. 사용하면 모든 개별 요소의 값을 얻을 수 있다. 구조 분해 할당 연산자와 다른 점은 기본적으로 모든 요소를 얻는다는 것이며 새로운 변수를 생성하지 않는다는 것이다. Spread Operator는 쉼표로 구분된 값을 쓰는 장소에서만 사용할 수 있다.( ex.배열 생성( [ ] ), 함수의 parameter에 값 전달. )
+es6부터 제시된 연산자. iterable (array, string, map, set. object는 불가능. es2018부터는 object도 사용 가능. )에 사용가능하다. 사용하면 모든 개별 요소의 값을 얻을 수 있다. 구조 분해 할당 연산자와 다른 점은 기본적으로 모든 요소를 얻는다는 것이며 새로운 변수를 생성하지 않는다는 것이다. Spread Operator는 쉼표로 구분된 값을 쓰는 장소에서만 사용할 수 있다.( ex.배열 생성( [ ] ), 함수의 parameter에 값 전달. )
 
 아래는 배열에서의 예시이다.
 
@@ -239,7 +239,7 @@ const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
 console.log(menu); // ["Focaccia", "Bruschetta", "Garlic Bread", "Caprese Salad", "Pizza", "Pasta", "Risotto"]
 ```
 
-위에서 설명했다시피 spread 연산자는 배열 외에도 iterable object( array, string, map, set )에 사용가능하다. (es2018 이후에는 object도 사용가능.)
+위에서 설명했다시피 spread 연산자는 배열 외에도 iterable( array, string, map, set )에 사용가능하다. (es2018 이후에는 object도 사용가능.)
 
 문자열에서의 사용예.
 
@@ -608,7 +608,7 @@ console.log(users[1]?.name ?? "User array empty"); // User array empty
 
 객체에는 객체의 키, 값, 엔트리를 요소로 갖는 배열을 생성하는 메소드가 존재한다.
 
-### 9-1. Object.keys()
+### 9-1. Object.keys(object)
 
 객체의 키를 요소로하는 배열 생성.
 
@@ -626,7 +626,7 @@ for (const day of properties) {
 console.log(openStr); // We are Open on 3 days: thu, fri, sat,
 ```
 
-### 9-2. Object.Values()
+### 9-2. Object.Values(object)
 
 객체의 값을 요소로 하는 배열 생성.
 
@@ -636,7 +636,7 @@ const values = Object.values(openingHours);
 console.log(values); // [{open: 12, close: 22},{open: 11, close: 23},{open: 0, close: 24}]
 ```
 
-### 9-2. Object.Entries()
+### 9-3. Object.Entries(object)
 
 객체의 키,값으로 이루어진 배열을 요소로 하는 배열 생성.
 
@@ -649,6 +649,218 @@ for (const [day, { open, close }] of entries) {
   console.log(`On ${day} we open in ${open} and close in ${close}`);
 }
 // On thu we open in 12 and close in 22
-//On fri we open in 11 and close in 23
-//On sat we open in 0 and close in 24
+// On fri we open in 11 and close in 23
+// On sat we open in 0 and close in 24
 ```
+
+## 10. Sets
+
+es6에서 도입된 두 자료구조(set,map)중 하나. set은 기본적으로 고유한 값의 집합이다. 한마디로 값의 중복이 발생하지 않는다. 이는 특정 상황에서 아주 유용하다. Set의 생성은 new Set();을 통해 이루어지며 괄호안에 iterable이 전달될 수 있다.(배열,문자열 등) set의 가장 큰 특징은 값의 중복이 발생하지 않는다는 것과 배열과는 달리 값에 순서가 없다는 것이다.
+
+예시
+
+```js
+const ordersSet = new Set(["Pasta", "Pizza", "Risotto", "Pasta", "Pizza"]);
+
+console.log(ordersSet); // {"Pasta", "Pizza", "Risotto"}
+console.log(ordersSet.size); // 3
+```
+
+set의 대표적인 프로퍼티, 메소드는 아래와 같다.
+
+```js
+console.log(ordersSet.size); // 3
+console.log(ordersSet.has("Pizza")); // true
+console.log(ordersSet.has("Bread")); // false
+
+ordersSet.add("Garlic Bread");
+ordersSet.add("Garlic Bread");
+ordersSet.delete("Risotto");
+
+console.log(ordersSet); // {"Pasta", "Pizza", "Garlic Bread"}
+```
+
+또한 set은 iterable이므로 looping이 가능하다.
+
+```js
+for (const order of ordersSet) {
+  console.log(order);
+}
+// Pasta
+// Pizza
+// Garlic Bread
+```
+
+set은 iterable의 중복을 제거하거나 값의 종류가 몇가지인지 알아내는 데에 활용할 수 있다.
+
+```js
+const staff = ["Waiter", "Chef", "Waiter", "Manager", "Chef", "Waiter"];
+const staffUnique = [...new Set(staff)]; // set 생성 후 spread 연산자를 통해 배열로 복사.
+
+console.log(staffUnique); // ["Waiter", "Chef", "Manager"]
+console.log(new Set(staff).size); // 3
+```
+
+## 11. Maps: Fundamentals
+
+key와 value로 이루어진 자료구조이다. 객체와 유사하다고 생각할 수 있지만 map에서는 key가 모든 타입을 지닐 수 있다는 것에서 큰 차이가 있다. map은 set과 마찬가지로 new 키워드를 사용하여 생성하며 set 메소드를 통해 요소를 삽입할 수 있다.
+
+```js
+const rest = new Map();
+rest.set("name", "Classico Italiano");
+rest.set(1, "Firenze, Italy");
+// map의 set 메소드는 갱신된 map을 반환한다.
+console.log(rest.set(2, "Lisbon, Portugal")); // {"name" => "Classico Italiano", 1 => "Firenze, Italy", 2 => "Lisbon, Portugal"}
+```
+
+map은 get 메소드를 통해 값을 가져올 수 있다.
+
+```js
+rest
+  .set("categories", ["Italian", "Pizzeria", "Vegetarian", "Organic"])
+  .set("open", 11)
+  .set("close", 23)
+  .set(true, "We are open :D")
+  .set(false, "We are closed :(");
+
+console.log(rest); // {"name" => "Classico Italiano", 1 => "Firenze, Italy", 2 => "Lisbon, Portugal", "categories" => Array(4), "open" => 11, …}
+
+console.log(rest.get("name")); // Classico Italiano
+console.log(rest.get(true)); // We are open :D
+
+const time = 21;
+console.log(rest.get(time > rest.get("open") && time < rest.get("close"))); // We are open :D
+```
+
+이 외에도 다른 메소드와 프로퍼티가 존재한다. 예시는 아래와 같다.
+
+```js
+console.log(rest.has("categories")); // true
+rest.delete(2);
+console.log(rest); // {"name" => "Classico Italiano", 1 => "Firenze, Italy", "categories" => Array(4), "open" => 11, "close" => 23, …}
+console.log(rest.size); // 7
+rest.clear();
+console.log(rest.size); // 0
+```
+
+key가 객체라면, 아래와 같은 문제가 발생할 수 있다.
+
+```js
+rest.set([1, 2], "Test");
+console.log(rest); // {Array(2) => "Test"}
+console.log(rest.get([1, 2])); // undefined
+```
+
+이는 set에서의 [1,2]와 get에서의 [1,2]는 힙메모리의 각자 다른 위치에 생성이 되기 때문에 동일하지 않다고 인식되기 때문이다. 그래서 아래와 같은 방법으로 해결할 수 있다.
+
+```js
+const arr = [1, 2];
+rest.set(arr, "Test");
+console.log(rest);
+console.log(rest.get(arr)); // Test
+```
+
+## 12. Maps: Iteration
+
+map을 생성할 때 아래와 같이 배열을 사용하여 여러 요소를 삽입할 수 있다.
+
+```js
+const question = new Map([
+  ["question", "What is the best programming language in the world?"],
+  [1, "C"],
+  [2, "Java"],
+  [3, "JavaScript"],
+  ["correct", 3],
+  [true, "Correct 🎉"],
+  [false, "Try again!"],
+]);
+const answer = 3;
+console.log(question); // {"question" => "What is the best programming language in the world?", 1 => "C", 2 => "Java", 3 => "JavaScript", "correct" => 3, …}
+console.log(question.get(answer === question.get("correct"))); // Correct 🎉
+```
+
+여기서 우리는 Object.entries 메소드를 활용하여 손쉽게 객체를 map으로 변환할 수 있다는 것을 알 수 있다.
+
+```js
+console.log(Object.entries(openingHours)); // ["thu", {…}],["fri", {…}],["sat", {…}]
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap); // {"thu" => {…}, "fri" => {…}, "sat" => {…}}
+```
+
+map은 iterable이기 때문에 iteration이 가능하다.
+
+```js
+for (const [key, value] of question) {
+  if (typeof key === "number") {
+    console.log(`${key} is ${value}`);
+  }
+}
+// 1 is C
+// 2 is Java
+// 3 is JavaScript
+```
+
+set과 마찬가지로 spread 연산자를 사용해서 배열로 변환이 가능하다. 또는 객체와 마찬가지로 keys 와 values 메소드, spread 연산자를 함께 사용해서 key, value를 따로 배열로 생성할 수도 있다.
+
+```js
+const arr = [...question];
+console.log(arr); // [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2)]
+console.log([...question.keys()]); // ["question", 1, 2, 3, "correct", true, false]
+console.log([...question.values()]); // ["What is the best programming language in the world?", "C", "Java", "JavaScript", 3, "Correct 🎉", "Try again!"]
+```
+
+## 12. Summary: Which Data Structure to Use?
+
+![](common/images/sources_of_data.jpg)
+
+### 12-1. Sources of data
+
+1.  프로그램 자체 : 소스 코드로 직접 작성된 데이터(예: 상태 메시지)
+
+2.  UI : 사용자가 입력한 데이터 또는 DOM으로 작성된 데이터(예: todo 앱에서의 작업.)
+
+3.  외부 : web API에서 가져온 데이터(예: recipe object)
+
+우리는 위의 경로로 데이터들을 수집하고 자료구조에 저장하게 된다.
+
+### 12-2. 어떤 자료구조를 사용할까?
+
+데이터를 단순하게 나열하려면 array 또는 set, key를 활용해 데이터를 묘사하려면 object 또는 map을 사용하자.
+
+### 12-3. web APIs
+
+일반적인 데이터의 원천, JSON 형태로 데이터를 제공한다. JSON은 자바스크립트의 객체, 배열과 같은 형태로 표현되기 때문에 활용이 용이하다.
+
+### 12-4. Arrays vs Sets and Object vs Maps
+
+![](common/images/Arrays_vs_Sets_Object_vs_Maps.jpg)
+
+- Arrays vs Sets
+
+  - 순서가 매겨진 데이터가 필요하거나 데이터를 조작해야 한다면 Array 사용.
+
+  - 유일한 값을 다루는 작업을 해야하거나 높은 성능이 중요할 때, 배열에서 중복된 데이터를 제거해야할 때는 set 사용.
+
+- Objects와 Maps. 각자의 장점.
+
+  - Object
+
+    1. map보다 더 전통적인 key/value 자료구조. ( 하지만 단순히 key/value를 저장하기 위한 사용은 여러 기술적인 단점이 존재. 몇몇 사람들이 object를 남용해왔다고 하는 이유. )
+
+    2. . 과 []를 활용하여 쉽게 값에 접근하고 사용할 수 있다.
+
+  - Map
+
+    1. 더 좋은 성능.
+
+    2. key가 모든 타입을 가질 수 있다.
+
+    3. iterate 하기 쉽다.
+
+    4. 크기를 계산하기 쉽다.
+
+- Objects vs Maps
+
+  - method를 필요로 하거나 JSON을 사용하는 작업을 할때는 Object 사용.
+
+  - 단순한 key/value 데이터구조를 사용해야하거나 String이 아닌 key 값을 사용해야 할때는 Map 사용.
