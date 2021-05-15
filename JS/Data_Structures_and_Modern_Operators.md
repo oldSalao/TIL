@@ -920,7 +920,7 @@ const plane = "A320";
 
 - String은 primitive type이라고 배웠는데 왜 메소드와 프로퍼티가 존재할까?
 
-  String은 객체가 아니다. 하지만 우리가 스트링의 메소드 프로퍼티를 호출하면 자바스크립트는 자동적으로 String primitive를 String object로 변환한다고 한다. 이러한 과정을 boxing이라고 한다. 마치 우리의 String을 object box안에 집어 넣는것과 같은 느낌으로 이해할 수 있다. method 또는 property는 string primitive을 반환하므로 이는 마치 객체로 변환된 문자열을 다시 원래의 문자열로 재변환하는 것과 같다.
+  String은 객체가 아니다. 하지만 우리가 스트링의 메소드 프로퍼티를 호출하면 자바스크립트는 자동적으로 String primitive를 String object로 변환한다고 한다. 이러한 과정을 boxing이라고 한다. 마치 우리의 String을 object box안에 집어 넣는것과 같은 느낌으로 이해할 수 있다. 위의 몇몇 method 또는 property는 string primitive을 반환하는데 이는 마치 객체로 변환된 문자열을 다시 원래의 문자열로 재변환하는 것처럼 보인다.
 
   String object는 아래와 같이 직접 생성할수도 있는데 콘솔에 출력된 내용을 보면 위의 method, property들이 존재하는 것을 알 수 있다.
 
@@ -942,4 +942,86 @@ const plane = "A320";
   console.log(typeof new String("Jonas").slice(1)); //string
   ```
 
-### 13-2.
+### 13-2. 문자열 변환
+
+- toLowerCase,toUpperCase
+
+  문자열의 모든 문자를 소문자 또는 대문자로 변환한다.
+
+  ```js
+  console.log(airline.toLowerCase()); // tap air portugal
+  console.log(airline.toUpperCase()); // TAP AIR PORTUGAL
+
+  //Fix capitalization in name
+  const passenger = "jOnAS";
+  const passengerLower = passenger.toLowerCase();
+  const passengerCorrect =
+    passengerLower[0].toUpperCase() + passengerLower.slice(1);
+
+  console.log(passengerCorrect); // Jonas
+  ```
+
+- trim
+
+  문자열에 존재하는 공백을 제거한다.
+
+  ```js
+  const email = "hello@jonas.io";
+  const loginEmail = "   Hello@Jonas.Io \n";
+
+  // const lowerEmail = loginEmail.toLowerCase();
+  // const trimmedEmail = lowerEmail.trim();
+  // console.log(trimmedEmail); // hello@jonas.io
+
+  const normalizedEmail = loginEmail.toLowerCase().trim();
+
+  console.log(normalizedEmail); // hello@jonas.io
+  console.log(email === normalizedEmail); // true
+  ```
+
+- replace, replaceAll
+
+  문자열에 존재하는 특정 문자,문자열을 원하는 문자, 문자열로 변경한다. replace는 처음 나타나는 해당 문자열만, replaceAll은 모든 해당하는 문자열을 변경한다.
+
+  ```js
+  const priceGB = "288,97£";
+  const priceUS = priceGB.replace("£", "$").replace(",", ".");
+  console.log(priceUS); // 288.97
+
+  const announcement =
+    "All passengers come to barding door 23. Boarding door 23!";
+
+  console.log(announcement.replace("door", "gate")); // All passengers come to barding gate 23. Boarding door 23!
+  console.log(announcement.replaceAll("door", "gate")); // All passengers come to barding gate 23. Boarding gate 23!
+  console.log(announcement.replace(/door/g, "gate")); // All passengers come to barding gate 23. Boarding gate 23!
+  ```
+
+- Boolean을 반환하는 여러 메소드들
+
+  includes는 임의의 문자,문자열의 포함여부, startWiths,endWiths는 각각 문자열이 임의의 문자 또는 문자열로 시작하는지, 끝나는지의 여부를 반환.
+
+  ```js
+  console.log(plane.includes("A")); // true
+  console.log(plane.includes("B")); // false
+  console.log(plane.startsWith("A3")); // true
+  console.log(plane.startsWith("3")); // flase
+  console.log(plane.endsWith("20")); // true
+  console.log(plane.endsWith("10")); // false
+  ```
+
+활용 예제
+
+```js
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  1;
+  if (baggage.includes("knife") || baggage.includes("gun")) {
+    console.log("you are not allowed on board");
+  } else {
+    console.log("Welcome aboard!");
+  }
+};
+checkBaggage("I have a laptop, some Food and a pocket knife"); // 'you are not allowed on board
+checkBaggage("Socks and camera"); // Welcome aboard!
+checkBaggage("Got some snacks and a gun for protection"); // 'you are not allowed on board
+```
