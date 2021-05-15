@@ -10,7 +10,7 @@
 
 - [The Nullish Coalescing Operator (??)](<#5.-The-Nullish-Coalescing-Operator-(??)>)
 
-- [Looping Arrays: The for-of Loop](#6.-Looping-Arrays:-The-for-of-Loop)
+- [Looping Arrays: The for-of Loop](#<6.-Looping-Arrays:-The-for-of-Loop>)
 
 - [Enhanced Object Literals](#7.-Enhanced-Object-Literals)
 
@@ -24,7 +24,7 @@
 
 - [Maps: Iteration](#12.-Maps:-Iteration)
 
-- [Summary: Which Data Structure to Use?](#12.-Summary:-Which-Data-Structure-to-Use?)
+- [Summary: Which Data Structure to Use?](>#12.-Summary:-Which-Data-Structure-to-Use?>)
 
 - [Working With Strings](#13.-Working-With-Strings)
 
