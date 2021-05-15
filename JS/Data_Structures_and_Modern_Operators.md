@@ -867,9 +867,7 @@ console.log([...question.values()]); // ["What is the best programming language 
 
 ## 13. Working With Strings
 
-### 13-1. 문자열의 기본적인 활용
-
-우선 아래와 같은 문자열이 있다.
+아래와 같은 문자열이 있다.
 
 ```js
 const airline = "TAP Air Portugal";
@@ -942,8 +940,6 @@ const plane = "A320";
   console.log(typeof new String("Jonas").slice(1)); //string
   ```
 
-### 13-2. 문자열 변환
-
 - toLowerCase,toUpperCase
 
   문자열의 모든 문자를 소문자 또는 대문자로 변환한다.
@@ -1009,19 +1005,97 @@ const plane = "A320";
   console.log(plane.endsWith("10")); // false
   ```
 
-활용 예제
+  활용 예제
 
-```js
-const checkBaggage = function (items) {
-  const baggage = items.toLowerCase();
-  1;
-  if (baggage.includes("knife") || baggage.includes("gun")) {
-    console.log("you are not allowed on board");
-  } else {
-    console.log("Welcome aboard!");
-  }
-};
-checkBaggage("I have a laptop, some Food and a pocket knife"); // 'you are not allowed on board
-checkBaggage("Socks and camera"); // Welcome aboard!
-checkBaggage("Got some snacks and a gun for protection"); // 'you are not allowed on board
-```
+  ```js
+  const checkBaggage = function (items) {
+    const baggage = items.toLowerCase();
+    1;
+    if (baggage.includes("knife") || baggage.includes("gun")) {
+      console.log("you are not allowed on board");
+    } else {
+      console.log("Welcome aboard!");
+    }
+  };
+  checkBaggage("I have a laptop, some Food and a pocket knife"); // 'you are not allowed on board
+  checkBaggage("Socks and camera"); // Welcome aboard!
+  checkBaggage("Got some snacks and a gun for protection"); // 'you are not allowed on board
+  ```
+
+- split, join
+
+  split은 문자열을 임의의 구분자를 기준으로 나눈것을 요소로 갖는 배열을 반환. join은 배열의 각 요소를 임의의 구분자를 삽입하여 합친 문자열로 반환.
+
+  ```js
+  //split and join
+  console.log("a+very+nice+string".split("+")); // ["a", "very", "nice", "string"]
+  console.log("Jonas Schmedtmann".split(" ")); // ["Jonas", "Schmedtmann"]
+
+  const [firstName, lastName] = "Jonas Schmedtmann".split(" ");
+
+  console.log(firstName, lastName); // Jonas Schmedtmann
+
+  const newName = ["Mr.", firstName, lastName.toUpperCase()].join(" ");
+  console.log(newName); // Mr. Jonas SCHMEDTMANN
+  ```
+
+  예제
+
+  ```js
+  const capitalizeName = function (name) {
+    const nameArr = name.split(" ");
+    const nameUpper = [];
+    // for (let i = 0; i < nameArr.length; i++) {
+    //   nameArr[i] = nameArr[i][0].toUpperCase() + nameArr[i].slice(1);
+    // }
+    for (const word of nameArr) {
+      nameUpper.push(word.replace(word[0], word[0].toUpperCase()));
+    }
+    // console.log(nameArr.join(' '));
+    console.log(nameUpper.join(" "));
+  };
+
+  capitalizeName("jessica ann smith davis"); // Jessica Ann Smith Davis
+  capitalizeName("jonas schmedtmann"); // Jonas Schmedtmann
+  ```
+
+- padStart, padEnd
+
+  문자열이 원하는 길이를 갖게끔 임의의 문자를 시작부분 혹은 끝부분에 채워서 반환.
+
+  ```js
+  const message = "Go to gate 23!";
+  console.log(message.padStart(25, "+").padEnd(35, "+")); // +++++++++++Go to gate 23!++++++++++
+  console.log("Jonas".padStart(25, "+").padEnd(35, "+")); // ++++++++++++++++++++Jonas++++++++++
+  ```
+
+  예제
+
+  ```js
+  const maskCreditCard = function (number) {
+    const str = number + "";
+    const lastNum = str.slice(-4);
+    return lastNum.padStart(str.length, "*");
+  };
+  console.log(maskCreditCard(53524265));
+  console.log(maskCreditCard(43378463864647384)); // *************7384
+  console.log(maskCreditCard("4561231857489534862")); // ***************4862
+  ```
+
+- repeat
+
+  문자열을 원하는 횟수만큼 반복하여 반환.
+
+  ```js
+  const message2 = "Bad waether... All Departures Delayed...";
+  console.log(message2.repeat(5));
+
+  const planesInLine = function (cnt) {
+    console.log(`There are ${cnt} planes in line ${"✈".repeat(cnt)}`);
+  };
+
+  planesInLine(5); // There are 5 planes in line ✈✈✈✈✈
+  planesInLine(12); // There are 12 planes in line ✈✈✈✈✈✈✈✈✈✈✈✈
+  ```
+
+이 외의 String 메소드는 [MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String) 참고.
