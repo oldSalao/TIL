@@ -800,7 +800,7 @@ for (const [key, value] of question) {
 // 3 is JavaScript
 ```
 
-set과 마찬가지로 spread 연산자를 사용해서 배열로 변환이 가능하다. 또는 객체와 마찬가지로 keys 와 values 메소드, spread 연산자를 함께 사용해서 key, value를 따로 배열로 생성할 수도 있다.
+set과 마찬가지로 spread 연산자를 사용해서 배열로 변환이 가능하다. 또는 keys 와 values 메소드, spread 연산자를 함께 사용해서 key, value를 따로 배열로 생성할 수도 있다.
 
 ```js
 const arr = [...question];
@@ -847,7 +847,7 @@ console.log([...question.values()]); // ["What is the best programming language 
 
     1. map보다 더 전통적인 key/value 자료구조. ( 하지만 단순히 key/value를 저장하기 위한 사용은 여러 기술적인 단점이 존재. 몇몇 사람들이 object를 남용해왔다고 하는 이유. )
 
-    2. . 과 []를 활용하여 쉽게 값에 접근하고 사용할 수 있다.
+    2. [] 과 .을 활용하여 쉽게 값에 접근하고 사용할 수 있다.
 
   - Map
 
@@ -864,3 +864,82 @@ console.log([...question.values()]); // ["What is the best programming language 
   - method를 필요로 하거나 JSON을 사용하는 작업을 할때는 Object 사용.
 
   - 단순한 key/value 데이터구조를 사용해야하거나 String이 아닌 key 값을 사용해야 할때는 Map 사용.
+
+## 13. Working With Strings
+
+### 13-1. 문자열의 기본적인 활용
+
+우선 아래와 같은 문자열이 있다.
+
+```js
+const airline = "TAP Air Portugal";
+const plane = "A320";
+```
+
+- [ ], length
+
+  배열과 같이 index를 사용해 문자 하나에 접근할 수 있으며 length 프로퍼티로 문자열의 길이를 알 수 있다.
+
+  ```js
+  // []
+  console.log(plane[0]); // A
+  console.log(plane[1]); // 3
+  console.log(plane[2]); // 2
+  console.log("B737"[0]); // B
+
+  // length
+  console.log(airline.length); // 16
+  console.log("B737".length); // 4
+  ```
+
+- indexOf, lastIndexOf
+
+  indexOf, lastIndexOf 메소드를 활용해 원하는 문자,문자열의 index를 얻을 수 있다.
+
+  ```js
+  // indexOf, lastIndexOf
+  console.log(airline.indexOf("r")); // 6
+  console.log(airline.lastIndexOf("r")); // 10
+  console.log(airline.indexOf("Portugal")); // 8
+  console.log(airline.indexOf("portugal")); // -1
+  ```
+
+- slice
+
+  slice 메소드로 문자열을 잘라낼 수 있다. slice(첫글자 index, 마지막글자 index + 1)과 같이 잘라내길 원하는 문자,문자열의 첫글자 인덱스와 마지막 글자의 인덱스를 활용한다. 문자열의 인덱스는 -를 붙여 마지막 글자부터 시작할수도 있다. (인덱스 -1은 마지막 인덱스)
+
+  ```js
+  // slice
+  console.log(airline.slice(4)); // Air Portugal
+  console.log(airline.slice(4, 7)); // Air
+  console.log(airline.slice(0, airline.indexOf(" "))); // TAP
+  console.log(airline.slice(airline.lastIndexOf(" ") + 1)); // Portugal
+  console.log(airline.slice(-2)); // al
+  console.log(airline.slice(1, -1)); // AP Air Portuga
+  ```
+
+- String은 primitive type이라고 배웠는데 왜 메소드와 프로퍼티가 존재할까?
+
+  String은 객체가 아니다. 하지만 우리가 스트링의 메소드 프로퍼티를 호출하면 자바스크립트는 자동적으로 String primitive를 String object로 변환한다고 한다. 이러한 과정을 boxing이라고 한다. 마치 우리의 String을 object box안에 집어 넣는것과 같은 느낌으로 이해할 수 있다. method 또는 property는 string primitive을 반환하므로 이는 마치 객체로 변환된 문자열을 다시 원래의 문자열로 재변환하는 것과 같다.
+
+  String object는 아래와 같이 직접 생성할수도 있는데 콘솔에 출력된 내용을 보면 위의 method, property들이 존재하는 것을 알 수 있다.
+
+  ```js
+  const jonas = new String("Jonas");
+
+  console.log(jonas);
+  // String {"Jonas"}
+  //0: "J"
+  // 1: "o"
+  // 2: "n"
+  // 3: "a"
+  // 4: "s"
+  // length: 5
+  // __proto__: String
+  // [[PrimitiveValue]]: "Jonas"
+
+  console.log(typeof jonas); // object
+  console.log(typeof new String("Jonas").slice(1)); //string
+  ```
+
+### 13-2.
