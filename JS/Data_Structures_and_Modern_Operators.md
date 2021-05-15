@@ -1,32 +1,32 @@
 # Data Structures and Modern Operators
 
-- [Destructuring](<#1.-destructuring-(구조-분해-할당.)>)
+- [Destructuring](<##1.-destructuring-(구조-분해-할당.)>)
 
-- [The Spread Operator (...)](<#2.-the-spread-operator-(...)>)
+- [The Spread Operator (...)](<##2.-the-spread-operator-(...)>)
 
-- [Rest Pattern and Parameters](#3.-Rest-Pattern-and-Parameters)
+- [Rest Pattern and Parameters](##3.-Rest-Pattern-and-Parameters)
 
-- [Short Circuiting (&& and ||)](<#4.-Short-Circuiting-(&&-and-||)>)
+- [Short Circuiting (&& and ||)](<##4.-Short-Circuiting-(&&-and-||)>)
 
-- [The Nullish Coalescing Operator (??)](<#5.-The-Nullish-Coalescing-Operator-(??)>)
+- [The Nullish Coalescing Operator (??)](<##5.-The-Nullish-Coalescing-Operator-(??)>)
 
-- [Looping Arrays: The for-of Loop](#<6.-Looping-Arrays:-The-for-of-Loop>)
+- [Looping Arrays: The for-of Loop](##6.-Looping-Arrays:-The-for-of-Loop)
 
-- [Enhanced Object Literals](#7.-Enhanced-Object-Literals)
+- [Enhanced Object Literals](##7.-Enhanced-Object-Literals)
 
-- [Optional Chaining (?.)](<#8.-Optional-Chaining-(?.)>)
+- [Optional Chaining (?.)](<##8.-Optional-Chaining-(?.)>)
 
-- [Looping Objects: Object Keys, Values, and Entries](#9.-Looping-Objects:-Object-Keys,-Values,-and-Entries)
+- [Looping Objects: Object Keys, Values, and Entries](##9.-Looping-Objects:-Object-Keys,-Values,-and-Entries)
 
-- [Sets](#10.-Sets)
+- [Sets](##10.-Sets)
 
-- [Maps: Fundamentals](#11.-Maps:-Fundamentals)
+- [Maps: Fundamentals](##11.-Maps:-Fundamentals)
 
-- [Maps: Iteration](#12.-Maps:-Iteration)
+- [Maps: Iteration](##12.-Maps:-Iteration)
 
-- [Summary: Which Data Structure to Use?](>#12.-Summary:-Which-Data-Structure-to-Use?>)
+- [Summary: Which Data Structure to Use?](##12.-Summary:-Which-Data-Structure-to-Use?)
 
-- [Working With Strings](#13.-Working-With-Strings)
+- [Working With Strings](##13.-Working-With-Strings)
 
 ## 1. Destructuring (구조 분해 할당.)
 
