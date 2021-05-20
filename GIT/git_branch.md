@@ -4,20 +4,25 @@
 
 Git의 브랜치는 커밋 사이를 가볍게 이동할 수 있는 어떤 포인터 같은 것이다. 기본적으로 Git은 master 브랜치를 만든다. 처음 커밋하면 이 master 브랜치가 생성된 커밋을 가리킨다. 이후 커밋을 만들면 master 브랜치는 자동으로 가장 마지막 커밋을 가리킨다.
 ![](common/images/branch-and-history.png)
+
 그림. 커밋개체를 가리키고 있는 브랜치.
 
 ## 1-2. HEAD
 
 HEAD란 특수한 포인터로 작업중인 로컬 브랜치를 가리킨다. checkout을 통해 가리킬 브랜치를 변경할 수 있는데 이렇게 브랜치를 이동하게 되면 워킹 디렉토리의 파일이 이동한 브랜치의 가장 마지막 작업 내용으로 변경되게 된다.
 ![](common/images/head-to-master.png)
+
 그림. HEAD가 master 브랜치를 가리키고 있다.
+
 ![](common/images/advance-testing.png)
+
 그림. checkout을 통해 HEAD가 testing을 가리키게 한 후 커밋을 수행하였다.
 
 ## 1-3. 갈라지는 브랜치
 
 여러 브랜치가 존재할 때, 각 브랜치에서 이루어 지는 작업은 독립적으로 각 브랜치에 존재하게된다.
 ![](common/images/advance-master.png)
+
 그림. 다시 checkout을 통해 HEAD가 master 브랜치를 가리키게 한 후 작업을 수행하자 브랜치가 갈라졌다.
 
 ## 1-4. Git의 브랜치
