@@ -109,4 +109,22 @@ const passenger = jonas;
 
 우리는 이미 primitive type과 reference type 간의 차이점을 알고 있다. 위와같은 상황에서 flightNum의 값을 변경하더라도 그것이 flight에는 반영이 되지 않지만 passenger의 프로퍼티를 변경하는 것은 jonas에 반영이 된다. 따라서 함수의 argument로써 reference type을 사용할때는 주의가 필요하다.
 
-위의 과정을 살펴보면 결과가 그렇듯 jonas 객체는 함수가 호출될 때 call-by-reference가 이루어진듯 하지만 사실 자바스크립트에는 call-by-value만이 존재한다. 정확히 말하자면 자바스크립트는 함수에 reference가 아닌 reference(객체가 저장된 힙 메모리 주소)를 포함하고 있는 '값'을 파라미터에 넘겨주기 때문이다.
+위의 과정을 살펴보면 jonas 객체는 함수가 호출될 때 call-by-reference가 이루어진듯 하지만 사실 자바스크립트에는 call-by-value만이 존재한다. 정확히 말하자면 자바스크립트는 함수에 reference가 아닌 reference(객체가 저장된 힙 메모리 주소)를 포함하고 있는 '값'을 파라미터에 넘겨주기 때문이다.
+
+## 3. First-Class and Higher-Order Functions
+
+JavaSrcipt의 함수는 first-class function으로 단순히 값이다. 또한 함수는 객체의 또다른 타입이다.
+
+### 3-1. 함수가 값이기에 가능한 것들.
+
+- 함수를 변수에 할당하거나 object의 프로퍼티로 사용할 수 있다.
+
+- 함수를 다른 함수의 arguments로서 전달할 수 있다.
+
+- 함수에서 함수를 반환할 수 있다.
+
+### 3-2. Higher-Order Functions
+
+Higher-Order Functions은 argument로 다른 함수를 전달받는 함수 또는 새로운 함수를 반환하는 함수를 의미한다. 이때 argument로 전달되는 함수를 callback function이라고 한다. 왜냐하면 callback function은 Higher-Order Function에 의해서 나중에 호출되기 때문이다.
+
+![](common/images/First-Class_and_Higher-Order_Functions.jpg)
