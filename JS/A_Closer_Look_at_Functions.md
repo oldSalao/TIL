@@ -113,7 +113,7 @@ const passenger = jonas;
 
 ## 3. First-Class and Higher-Order Functions
 
-JavaSrcipt의 함수는 first-class function으로 단순히 값이다. 또한 함수는 객체의 또다른 타입이다.
+JavaSrcipt의 함수는 first-class function으로 단순히 값이다. 또한 함수는 객체의 또다른 유형이다.
 
 ### 3-1. 함수가 값이기에 가능한 것들.
 
@@ -128,3 +128,63 @@ JavaSrcipt의 함수는 first-class function으로 단순히 값이다. 또한 �
 Higher-Order Functions은 argument로 다른 함수를 전달받는 함수 또는 새로운 함수를 반환하는 함수를 의미한다. 이때 argument로 전달되는 함수를 callback function이라고 한다. 왜냐하면 callback function은 Higher-Order Function에 의해서 나중에 호출되기 때문이다.
 
 ![](common/images/First-Class_and_Higher-Order_Functions.jpg)
+
+## 4. Functions Accepting Callback Functions
+
+위에서도 말했듯이 함수에 arguments로 함수를 전달하면 전달되는 함수는 callback function이고 전달받는 함수는 higher-order function이라고 한다. JavaScript에서 callback function은 매우 중요한 컨셉이다. 많은 built-in function들에 이 컨셉이 적용되어있다. 아래는 callback function 활용의 예이다.
+
+```js
+const oneword = function (str) {
+  return str.replace(/ /g, "").toLowerCase();
+};
+
+const upperFirstWord = function (str) {
+  const [first, ...others] = str.split(" ");
+  return [first.toUpperCase(), ...others].join(" ");
+};
+//Higher-order function
+const transformer = function (str, fn) {
+  console.log(`Original string : ${str}`);
+  console.log(`Transformed string : ${fn(str)}`);
+  console.log(`Transformed by : ${fn.name}`);
+};
+
+transformer("JavaScript is the best!", upperFirstWord);
+// Original string : JavaScript is the best!
+// Transformed string : JAVASCRIPT is the best!
+// Transformed by : upperFirstWord
+
+transformer("JavaScript is the best!", oneword);
+// Original string : JavaScript is the best!
+// Transformed string : javascriptisthebest!
+// Transformed by : oneword
+```
+
+### 4-1. callback function의 장점.
+
+- 코드를 보다 재사용성, 상호 연결성이 있도록 분할할 수 있다.
+
+- 추상화가 가능하도록 해준다.
+
+### 4-2. 추상화란?
+
+추상화란 기본적으로 코드 구현의 세부사항을 숨기는 것. 우리는 추상화를 통해 코드의 세부사항을 낮은 수준의 추상적 단계에 넘겨주고 문제에 대해 더 높은 추상적 단계에서 생각할 수 있게 된다.
+
+```js
+const oneword = function (str) {
+  return str.replace(/ /g, "").toLowerCase();
+};
+
+const upperFirstWord = function (str) {
+  const [first, ...others] = str.split(" ");
+  return [first.toUpperCase(), ...others].join(" ");
+};
+//Higher-order function
+const transformer = function (str, fn) {
+  console.log(`Original string : ${str}`);
+  console.log(`Transformed string : ${fn(str)}`);
+  console.log(`Transformed by : ${fn.name}`);
+};
+```
+
+위의 예시에서 우리는 문자열 변환 코드를 oneword, upperFirstWord 함수로 추상화 하였기 때문에 transformer 함수에서 문자열이 어떻게 변환이 되는지는 신경쓸 필요가 없으며 그저 추상화된 함수를 사용하면 되게 되었다. 즉, 우리는 연산과정을 낮은 수준의 추상적 단계(oneword, upperFirstWord)로 넘기고 높은 수준의 추상적 단계(transformer)에서 생각할 수 있게 된 것이다.
