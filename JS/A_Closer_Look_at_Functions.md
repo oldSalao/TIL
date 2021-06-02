@@ -187,4 +187,4 @@ const transformer = function (str, fn) {
 };
 ```
 
-위의 예시에서 우리는 문자열 변환 코드를 oneword, upperFirstWord 함수로 추상화 하였기 때문에 transformer 함수에서 문자열이 어떻게 변환이 되는지는 신경쓸 필요가 없으며 그저 추상화된 함수를 사용하면 되게 되었다. 즉, 우리는 연산과정을 낮은 수준의 추상적 단계(oneword, upperFirstWord)로 넘기고 높은 수준의 추상적 단계(transformer)에서 생각할 수 있게 된 것이다.
+위의 예시에서 우리는 문자열 변환 코드를 oneword, upperFirstWord 함수로 추상화 하였기 때문에 transformer 함수에서 문자열이 어떻게 변환이 되는지는 신경쓸 필요가 없어졌으며 그저 추상화된 함수를 사용하면 되게 되었다. 즉, 우리는 연산과정을 낮은 수준의 추상적 단계(oneword, upperFirstWord)로 넘기고 높은 수준의 추상적 단계(transformer)에서 생각할 수 있게 된 것이다.
