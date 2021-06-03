@@ -1,4 +1,4 @@
-# Spring Inversion of Control - XML Configuration
+# Spring Inversion of Control -
 
 ## IoC 란?
 
@@ -20,7 +20,7 @@
 
   - Java Source Code
 
-- 스프링 개발 프로세스
+- IoC Process
 
   1.  Spring beans 구성.
 
@@ -32,7 +32,9 @@
 
   2.  Spring Container 생성.
 
-  3.  Spring Container로부터 beans 회수.
+  3.  Spring Container로부터 beans 얻기.
+
+## Spring Inversion of Control - XML Configuration
 
 1. Spring beans 구성.
 
@@ -54,10 +56,10 @@ Spring Container는 일반적으로 ApplicationContext라고 한다. (ClassPathX
 ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 ```
 
-3. Spring Container로부터 beans 회수.
+3. Spring Container로부터 beans 얻기.
 
 ```java
-// Spring Container로부터 beans 회수.
+// Spring Container로부터 beans 얻기.
 // Coach는 인터페이스
 // getBean의 두번째 인자로 인터페이스 클래스를 전달함으로써 Spring은 해당 클래스 타입으로 객체를 캐스팅 해준다.
 // 인자로 클래스를 전달하지 않으면 반환형은 Object임.
