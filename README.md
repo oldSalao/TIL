@@ -27,6 +27,8 @@ Today I Learned.
 
 - [Inversion of Control](./SPRING/inversion_of_control.md)
 
+- [Dependency Injection](./SPRING/dependency_injection.md)
+
 ## GIT
 
 - [git 명령어](./GIT/git_command.md)
