@@ -27,7 +27,9 @@ Today I Learned.
 
 - [Inversion of Control](./SPRING/inversion_of_control.md)
 
-- [Dependency Injection](./SPRING/dependency_injection.md)
+- [Dependency Injection - XML](./SPRING/dependency_injection.md)
+
+- [Dependency Injection - Annotations](./SPRING/dependency_injection_with_annotaions.md)
 
 - [Bean Scopes and Lifecycle](./SPRING/bean_scopes_and_lifecycle)
 
