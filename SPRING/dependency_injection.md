@@ -1,4 +1,4 @@
-# Spring Dependency Injection
+# Spring Dependency Injection - XML
 
 ## 1. DI?
 
