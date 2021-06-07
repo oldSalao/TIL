@@ -1,10 +1,10 @@
-# Spring Inversion of Control -
+# Spring Inversion of Control
 
-## IoC 란?
+## 1. IoC 란?
 
 번역하면 "제어의 역전"이라고 한다. 스프링에서 객체의 생성과 관리에 대한 제어권이 개발자가 아닌 컨테이너에게 역전되는 것을 뜻한다.
 
-## Spring Container
+## 2. Spring Container
 
 - 스프링 컨테이너의 주요 기능
 
@@ -34,7 +34,7 @@
 
   3.  Spring Container로부터 beans 얻기.
 
-## Spring Inversion of Control - XML Configuration
+## 3. Spring Inversion of Control - XML Configuration
 
 1. Spring beans 구성.
 
@@ -65,3 +65,50 @@ ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("app
 // 인자로 클래스를 전달하지 않으면 반환형은 Object임.
 Coach theCoach = context.getBean("myCoach",Coach.class);
 ```
+
+## 4. Spring Inversion of Control - Java Annotations
+
+Spring은 특수한 annotation이 추가된 class를 스캔하고 자동으로 컨테이너에 Bean을 등록한다. 규모에 따라 장황해질 수 있는 xml 파일을 사용하는 방식에 비해 간편하다고 할 수 있다.
+
+### 4-1. Java Annotations?
+
+- Java class들에 추가되는 특별한 라벨/마커
+
+- class에 대한 meta-data를 제공
+
+- 런타임 또는 컴파일타임에 처리된다.
+
+### 4-2. Development Process
+
+1. Spring config 파일에서 컴포넌트 스캐닝을 활성화.
+
+```xml
+<beans ...>
+<context:component-scan base-package="com.example"/>
+</beans>
+```
+
+2. class에 @Component annotation을 추가.
+
+```java
+// @Component("bean ID")
+@Component("thatSillyCoach")
+public class TennisCoach implements Coach{
+
+  @Override
+  public String getDailyWorkout(){
+    return "Practice your backhand volley";
+  }
+
+}
+```
+
+3. Spring 컨테이너에서 Bean을 회수.
+
+```java
+Coach theCoach = context.getBean("thatSillyCoach",Coach.class);
+```
+
+### 4-3. Default Component Names
+
+Default bean id는 앞글자가 소문자로 변경된 class 이름이다.
