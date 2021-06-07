@@ -1,13 +1,13 @@
 # Spring Dependency Injection
 
-## DI?
+## 1. DI?
 
 의존성 주입이라고 한다
 
     의존성?
     어떤 클래스 A가 다른 클래스 또는 인터페이스B를 이용할 때 A가 B에 의존한다고 한다. 이 경우에서 의존성을 주입한다는 것은 클래스 A가 의존하는 B를 외부에서 전달해준다는 것이다.
 
-## Injection Types
+## 2. Injection Types
 
 스프링에는 다양한 유형의 injection이 존재한다. 그 중 가장 일반적인 두가지는 아래와 같다.
 
@@ -15,7 +15,7 @@
 
 - Setter Injection
 
-## Process of Constructor Injection
+## 3. Process of Constructor Injection
 
 1. 의존성 클래스와 인터페이스 정의
 
@@ -104,7 +104,7 @@ public class HelloSpringApp {
 }
 ```
 
-## Process of Setter Injection
+## 4. Process of Setter Injection
 
 1. Injection을 위한 setter 메소드를 클래스에 정의.
 
@@ -176,7 +176,7 @@ public class SetterDemoApp {
 }
 ```
 
-## Injecting Literal Values
+## 5. Injecting Literal Values
 
 1. Injection을 위한 setter 메소드를 클래스에 정의.
 
@@ -276,7 +276,7 @@ public class SetterDemoApp {
 }
 ```
 
-## Injecting Values from Properties File
+## 6. Injecting Values from Properties File
 
 1. name과 value로 이루어진 Properties 파일 생성.
 
