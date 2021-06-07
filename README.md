@@ -29,6 +29,8 @@ Today I Learned.
 
 - [Dependency Injection](./SPRING/dependency_injection.md)
 
+- [Bean Scopes and Lifecycle](./SPRING/bean_scopes_and_lifecycle)
+
 ## GIT
 
 - [git 명령어](./GIT/git_command.md)
