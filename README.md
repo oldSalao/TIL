@@ -25,13 +25,15 @@ Today I Learned.
 
 ## Spring
 
-- [Inversion of Control](./SPRING/inversion_of_control.md)
+- [Inversion of Control - XML and Annotation](./SPRING/inversion_of_control.md)
 
 - [Dependency Injection - XML](./SPRING/dependency_injection.md)
 
 - [Dependency Injection - Annotations](./SPRING/dependency_injection_with_annotaions.md)
 
-- [Bean Scopes and Lifecycle](./SPRING/bean_scopes_and_lifecycle)
+- [Bean Scopes and Lifecycle - XML](./SPRING/bean_scopes_and_lifecycle)
+
+- [Bean Scopes and Lifecycle - Annotation](./SPRING/bean_scopes_and_lifecycle_annotation.md)
 
 ## GIT
 
