@@ -413,9 +413,141 @@ public class Student {
 
 ### 8-4. form:radiobutton
 
+form:radiobutton 태그의 사용법은 아래와 같다.
+
 ```html
 Java<form:radiobutton path="favoriteLanguage" value="Java" /><br />
 C#<form:radiobutton path="favoriteLanguage" value="C#" /><br />
 PHP<form:radiobutton path="favoriteLanguage" value="PHP" /><br />
 Ruby<form:radiobutton path="favoriteLanguage" value="Ruby" />
+```
+
+select 태그와 마찬가지로 맵을 활용하면 아래와 같이 사용할 수도 있다.
+
+```java
+public class Student {
+
+    private LinkedHashMap<String,String> favoriteLanguageOptions;
+
+    public Student(){
+        favoriteLanguageOptions = new LinkedHashMap<>();
+        // parameter order: value, display label
+        favoriteLanguageOptions.put("Java", "Java");
+        favoriteLanguageOptions.put("C#", "C#");
+        favoriteLanguageOptions.put("PHP", "PHP");
+        favoriteLanguageOptions.put("Ruby", "Ruby");
+    }
+    ...
+}
+```
+
+```html
+<form:radiobuttons
+  path="favoriteLanguage"
+  items="${student.favoriteLanguageOptions}"
+/>
+```
+
+### 8-5. form:checkbox
+
+form:checkbox 태그의 기본적인 사용법은 아래와 같다.
+
+```html
+Linux <form:checkbox path="operatingSystems" value="Linux" /><br />
+Mac OS <form:checkbox path="operatingSystems" value="Mac OS" /><br />
+MS Windows <form:checkbox path="operatingSystems" value="MS Windows" />
+```
+
+submit시에 체크된 value 값들을 operatingSystems라는 문자열 배열에 바인딩되도록 field와 getter,setter를 세팅한다.
+
+```java
+public class Student {
+
+    ...
+
+    private String[] operatingSystems;
+
+    ...
+
+    public String[] getOperatingSystems() {
+        return operatingSystems;
+    }
+
+    public void setOperatingSystems(String[] operatingSystems) {
+        this.operatingSystems = operatingSystems;
+    }
+
+    ...
+}
+```
+
+JSTL을 사용하여 페이지에 데이터를 나타낸다.
+
+```html
+... <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> ...
+
+<ul>
+  <c:forEach var="temp" items="${student.operatingSystems}">
+    <li>${temp}</li>
+  </c:forEach>
+</ul>
+```
+
+## 9. Spring MVC Form Validation
+
+Validation이란 데이터의 값이 유효한지 확인하는 것을 의미한다. Spring 4 이상부터 이런 유효성 검증을 위한 Bean Validation API를 지원하고 있다. 아래는 유효성 검증에 사용되는 어노테이션이다.
+
+![](./common/images/form-validation.jpg)
+
+### 9-1. Required Fields
+
+1. 검증 규칙을 클래스에 추가.(@NotNull, @Size)
+
+```java
+public class Customer{
+    private String firstName;
+
+    @NotNull(message="is required")
+    @Size(min=1, message="is required")
+    private String lastName;
+    ...
+}
+```
+
+2. HTML form에서 에러 메시지를 보여준다. (<form:errors path="lastName" cssClass="error" />)
+
+```html
+<form:form action="processForm" modelAttribute="customer">
+  First name : <form:input path="firstName" />
+  <br />
+  Last name (*) : <form:input path="lastName" />
+  <form:errors path="lastName" cssClass="error" />
+  <br />
+  <input type="submit" value="Submit" />
+</form:form>
+```
+
+3. Controller 클래스에서 검증 수행. 예시를 보면 @Valid로 Customer 객체에 검증을 수행하게하고 그 검증 결과는 BindingResult 객체에 담기게된다. 즉, Spring은 해당 메소드가 호출되면 검증을 수행하고 그 검증결과는 BindingResult 객체에 담기는 것.
+
+```java
+@RequestMapping("/processForm")
+public String processForm(@Valid @ModelAttribute("customer") Customer theCostomer, BindingResult theBindingResult){
+
+    if(theBindingResult.hasErrors()){
+        return "customer-form";
+    }
+    else{
+        return "customer-confirmation";
+    }
+}
+```
+
+4. 결과 페이지 작성.
+
+```html
+<html>
+  <body>
+    The customer is confirmed: ${customer.firstName} ${customer.lastName}
+  </body>
+</html>
 ```
