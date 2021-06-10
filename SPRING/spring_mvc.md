@@ -242,7 +242,7 @@ public class HomeController{
    Controller method에 Model 파라미터를 추가하고 Model.addAttribute("이름",값) 을 통해 Model에 데이터를 담을 수 있다.
 
 ```java
-@RequestMapping("processFormVersionTwo")
+@RequestMapping("/processFormVersionTwo")
 public String letsShoutDude(HttpServletRequest request, Model model){
 
     String theName = request.getParameter("studentName");
@@ -272,3 +272,150 @@ public String letsShoutDude(HttpServletRequest request, Model model){
 ```
 
 ## 7. Binding Request Params
+
+@RequestParam annotation을 통해서 HTML form data를 변수에 바인딩할 수 있다. 아래 예시에서는 @RequestParam("studentName")을 통해 studentName에 해당하는 request 파라미터를 얻어와 theName 변수에 바인딩한다.
+
+```java
+@RequestMapping("/processFormVersionTwo")
+public String letsShoutDude(@RequestParam("studentName") String theName, Model model){
+    ...
+}
+```
+
+## 7. Controller Level Request Mapping
+
+Controller에 @RequestMapping 어노테이션을 적용할 수 있다. 모든 Controller method의 mapping 앞에 Controller의 mapping이 적용된다. ex. showForm()의 경우 /funny/showForm
+
+```java
+@RequestMapping("/funny")
+public class FunnyController{
+    @RequestMapping("/showForm")
+    public String showForm(){
+        ...
+    }
+    @RequestMapping("/processForm")
+    public String process(HttpServletRequest request, Model model){
+
+    }
+}
+```
+
+이와 같은 방식은 Mapping이 충돌하는 상황을 해결하는데 도움을 준다.
+
+## 8. Spring MVC Form Tags
+
+Spring MVC Form Tags는 웹페이지의 일부로써 구성 및 재사용이 가능하다. 또한 data binding을 가능하게 하여 자동적으로 data를 세팅하거나 Java 객체 또는 bean에서 데이터를 가져올 수 있다.
+
+![](./common/images/spring-mvc-form-tags.jpg)
+
+### 8-1. How To Reference Spring MVC Form Tags
+
+Spring MVC Form Tags를 참조하기 위해서는 JSP 파일의 첫부분에 Spring 네임스페이스를 지정해야 한다.
+
+```jsp
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+```
+
+### 8-2. Text Fields
+
+1. Form을 사용하는 페이지 요청과 매핑된 컨트롤러를 아래와 같이 작성. addAttribute를 통해서 비어있는 객체를 Model에 추가한다.
+
+```java
+@RequestMapping("/showForm")
+public String showForm(Model theModel){
+
+    theModel.addAttribute("student",new Student());
+
+    return "student-form";
+}
+```
+
+2. Form을 사용하는 페이지 작성. form:input의 path는 Spring에서 submit시에는 setFirstName, 데이터를 가져다 쓸 때는 getFirstName이 수행되는데 이처럼 setter, getter명에 사용된다.
+
+```html
+<form:form action="processForm" modelAttribute="student">
+  First name : <form:input path="firstName" />
+
+  <br />
+
+  Last name : <form:input path="lastName" />
+
+  <br />
+
+  <input type="submit" value="Submit" />
+</form:form>
+```
+
+3. form tag에 입력된 값을 getter를 통해 얻어올 수 있다. 이때 파라미터의 @ModelAttribute("student") 어노테이션을 통해 Model의 student attribute가 Student 객체 theStudent에 자동으로 바인딩된다.
+
+```java
+@RequestMapping("/processForm")
+public String processForm(@ModelAttribute("student") Student theStudent){
+
+    System.out.println("theStudent : " + theStudent.getLastName());
+
+    return "student-confirmation";
+}
+```
+
+4. Form을 통해 얻은 데이터를 보여줄 페이지 작성.
+
+```html
+<html>
+  <body>
+    The student is confirmed : ${student.firstName} ${student.lastName}
+  </body>
+</html>
+```
+
+### 8-3. form:select
+
+1. JSP 페이지 form안에 아래와 같은 form:select 태그를 작성. value는 코드내의 값이 될 것이며 label은 셀렉트박스에 보여지는 항목 이름이 될 것이다. path는 위에서 배운것과 동일.
+
+```html
+<form:select path="country">
+  <form:option value="Brazil" label="Brazil" />
+  <form:option value="France" label="France" />
+  <form:option value="Germany" label="Germany" />
+  <form:option value="India" label="India" />
+</form:select>
+```
+
+2. map을 활용하면 아래와 같이 태그를 간단하게 작성할 수 있다. map의 key가 바인딩되는 값이 되며 value가 셀렉트박스에 보여지는 label이 된다.
+
+```java
+public class Student {
+
+    private String firstName;
+    private String lastName;
+    private String country;
+
+    private LinkedHashMap<String,String> countryOptions;
+
+    public Student(){
+        countryOptions = new LinkedHashMap<>();
+
+        countryOptions.put("BR","Brazil");
+        countryOptions.put("FR","France");
+        countryOptions.put("DE","Germany");
+        countryOptions.put("IN","India");
+        countryOptions.put("US","United States of America");
+    }
+    ...
+}
+```
+
+```html
+<form:select path="country">
+  <form:option items="${student.countryOptions}" />
+</form:select>
+```
+
+### 8-4. form:radiobutton
+
+```html
+Java<form:radiobutton path="favoriteLanguage" value="Java" /><br />
+C#<form:radiobutton path="favoriteLanguage" value="C#" /><br />
+PHP<form:radiobutton path="favoriteLanguage" value="PHP" /><br />
+Ruby<form:radiobutton path="favoriteLanguage" value="Ruby" />
+```
