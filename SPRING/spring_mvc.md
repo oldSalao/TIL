@@ -542,6 +542,8 @@ public String processForm(@Valid @ModelAttribute("customer") Customer theCostome
 }
 ```
 
+    BindingResult 파라미터는 Model 속성 파라미터의 바로 다음 순서에 위치하여야 한다. 다른 위치에 배치하면 유효성 검증이 원하는대로 작동하지 않을 것이다.
+
 4. 결과 페이지 작성.
 
 ```html
@@ -551,3 +553,27 @@ public String processForm(@Valid @ModelAttribute("customer") Customer theCostome
   </body>
 </html>
 ```
+
+### 9-2. @InitBinder
+
+위의 예시는 lastname field에 공백을 채워넣어도 검증을 통과한다는 문제가 있다. @InitBinder 어노테이션을 통해 공백을 제거해보자.
+
+@InitBinder
+
+- @InitBinder는 전처리(pre-processor)로 작동한다.
+
+- 컨트롤러를 향한 모든 웹 요청의 전처리를 수행한다.
+
+- 메소드에 @InitBinder 어노테이션을 적용한다.
+
+```java
+@InitBinder
+public void initBinder(WebDataBinder dataBinder){
+
+    StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+
+    dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+}
+```
+
+Customer컨트롤러 클래스에 위와같이 @InitBinder가 적용된 메소드를 추가하면 해당 메소드는 자신이 포함된 컨트롤러에 전달되는 모든 요청에 전처리를 수행한다.
