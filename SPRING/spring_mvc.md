@@ -282,7 +282,7 @@ public String letsShoutDude(@RequestParam("studentName") String theName, Model m
 }
 ```
 
-## 7. Controller Level Request Mapping
+## 8. Controller Level Request Mapping
 
 Controller에 @RequestMapping 어노테이션을 적용할 수 있다. 모든 Controller method의 mapping 앞에 Controller의 mapping이 적용된다. ex. showForm()의 경우 /funny/showForm
 
@@ -302,13 +302,13 @@ public class FunnyController{
 
 이와 같은 방식은 Mapping이 충돌하는 상황을 해결하는데 도움을 준다.
 
-## 8. Spring MVC Form Tags
+## 9. Spring MVC Form Tags
 
 Spring MVC Form Tags는 웹페이지의 일부로써 구성 및 재사용이 가능하다. 또한 data binding을 가능하게 하여 자동적으로 data를 세팅하거나 Java 객체 또는 bean에서 데이터를 가져올 수 있다.
 
 ![](./common/images/spring-mvc-form-tags.jpg)
 
-### 8-1. How To Reference Spring MVC Form Tags
+### 9-1. How To Reference Spring MVC Form Tags
 
 Spring MVC Form Tags를 참조하기 위해서는 JSP 파일의 첫부분에 Spring 네임스페이스를 지정해야 한다.
 
@@ -316,7 +316,7 @@ Spring MVC Form Tags를 참조하기 위해서는 JSP 파일의 첫부분에 Spr
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 ```
 
-### 8-2. Text Fields
+### 9-2. Text Fields
 
 1. Form을 사용하는 페이지 요청과 매핑된 컨트롤러를 아래와 같이 작성. addAttribute를 통해서 비어있는 객체를 Model에 추가한다.
 
@@ -368,7 +368,7 @@ public String processForm(@ModelAttribute("student") Student theStudent){
 </html>
 ```
 
-### 8-3. form:select
+### 9-3. form:select
 
 1. JSP 페이지 form안에 아래와 같은 form:select 태그를 작성. value는 코드내의 값이 될 것이며 label은 셀렉트박스에 보여지는 항목 이름이 될 것이다. path는 위에서 배운것과 동일.
 
@@ -411,7 +411,7 @@ public class Student {
 </form:select>
 ```
 
-### 8-4. form:radiobutton
+### 9-4. form:radiobutton
 
 form:radiobutton 태그의 사용법은 아래와 같다.
 
@@ -448,7 +448,7 @@ public class Student {
 />
 ```
 
-### 8-5. form:checkbox
+### 9-5. form:checkbox
 
 form:checkbox 태그의 기본적인 사용법은 아래와 같다.
 
@@ -493,13 +493,13 @@ JSTL을 사용하여 페이지에 데이터를 나타낸다.
 </ul>
 ```
 
-## 9. Spring MVC Form Validation
+## 10. Spring MVC Form Validation
 
 Validation이란 데이터의 값이 유효한지 확인하는 것을 의미한다. Spring 4 이상부터 이런 유효성 검증을 위한 Bean Validation API를 지원하고 있다. 아래는 유효성 검증에 사용되는 어노테이션이다.
 
 ![](./common/images/form-validation.jpg)
 
-### 9-1. Required Fields
+### 10-1. Required Fields
 
 1. 검증 규칙을 클래스에 추가.(@NotNull, @Size)
 
@@ -554,7 +554,7 @@ public String processForm(@Valid @ModelAttribute("customer") Customer theCostome
 </html>
 ```
 
-### 9-2. @InitBinder
+### 10-2. @InitBinder
 
 위의 예시는 lastname field에 공백을 채워넣어도 검증을 통과한다는 문제가 있다. @InitBinder 어노테이션을 통해 공백을 제거해보자.
 
@@ -577,3 +577,167 @@ public void initBinder(WebDataBinder dataBinder){
 ```
 
 Customer컨트롤러 클래스에 위와같이 @InitBinder가 적용된 메소드를 추가하면 해당 메소드는 자신이 포함된 컨트롤러에 전달되는 모든 요청에 전처리를 수행한다.
+
+### 10-3. Validating a Number Range
+
+Spring의 유효성 검증으로 숫자의 범위를 검증할 수 있다.
+
+1. 검증규칙 추가
+
+```java
+public class Customer{
+
+  @Min(value = 0, message="must be greater than or equal to zero")
+  @Max(value=10, message="must be less than or equal to 10")
+  private int freePasses;
+
+  ...
+}
+```
+
+2. HTML form에 에러메시지를 보여준다.
+
+```html
+<body>
+  <form:form action="processForm" modelAttribute="customer">
+    Free Passes : <form:input path="freePasses" />
+    <form:errors path="freePasses" cssClass="error" />
+    <br />
+    <input type="submit" value="Submit" />
+  </form:form>
+</body>
+```
+
+3. Controller 클래스에서 검증 수행.
+
+```java
+@RequestMapping("/processForm")
+    public String processForm(@Valid @ModelAttribute("customer") Customer theCustomer, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            return "customer-form";
+        }
+        else{
+            return "customer-confirmation";
+        }
+    }
+```
+
+4. 결과 페이지 작성.
+
+```html
+<html>
+  <head>
+    <title>Title</title>
+  </head>
+  <body>
+    Free Passes : ${customer.freePasses}
+  </body>
+</html>
+```
+
+### 10-4. Applying Regular Expressions
+
+정규 표현식(Regular Expression)이란 문자열의 특정한 패턴을 표현하는데 사용하는 일련의 문자이다. 정규 표현식은 문자열을 찾거나 일치시키는데 사용한다.
+
+[정규표현식 tutorial](https://docs.oracle.com/javase/tutorial/essential/regex/)
+
+검증규칙 추가 예시
+
+```java
+public class Customer{
+
+  @Pattern(regexp="^[a-zA-Z0-9]{5}"),message="only 5 chars/digits")
+  private String postalCode;
+
+  ...
+}
+```
+
+### 10-5. Custom Message
+
+페이지에 보여지게 될 에러메시지를 설정하는것이 가능하다. messages.properties 파일을 생성하고 아래와 같이 작성한다.
+
+```properties
+typeMismatch.customer.freePasses=Invalid number
+```
+
+형식은
+( 에러타입.모델속성이름.필드이름=메시지 ) 이다. 에러타입은 BindingResult를 콘솔에 출력해보면 확인할 수 있다.
+
+다음으로 dispatcher-servlet에 아래와 같은 항목을 추가한다.
+
+```xml
+<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames" value="messages"/>
+    </bean>
+```
+
+### 10-6. Custom Form Validation
+
+기존의 유효성 검증 어노테이션 외에도 사용자 정의 어노테이션을 만들 수 있다.
+
+1. @CourseCode 어노테이션 작성.@interface 는 interface의 특별한 형태로 사용자 정의 어노테이션을 작성할 때 사용한다. @Constraint에는 검증을 위한 규칙을 가지고있는 클래스를 넘겨주고 @Target으로 검증을 적용할 대상이 field인지 method인지 결정하며 @Retention으로 어노테이션을 Java Class파일에 얼마나 오래 보관할 것인지 결정한다.
+
+```java
+@Constraint(validatedBy=CourseCodeConstraintValidator.class)
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface CourseCode{
+  ...
+}
+```
+
+2. 어노테이션이 될 인터페이스에 method 추가. 아래 method는 해당 어노테이션이 value, message라는 attribute를 가짐을 의미. default 값을 설정가능.
+
+```java
+@Constraint(validatedBy=CourseCodeConstraintValidator.class)
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface CourseCode{
+
+  public String value() default "LUV";
+
+  public String message() default "must start with LUV";
+
+}
+```
+
+3. 검증 규칙을 포함하고 있는 헬퍼 클래스 작성. 해당 클래스에는 true 또는 false 즉, 검증을 통과했는지에 대한 여부를 반환하는 메소드를 작성한다.
+
+   - ConstraintValidator를 구현하며 제네릭은 <생성한 어노테이션, 검증을 거칠 데이터의 타입>이다.
+
+   - 아래 예시를 보면 생성자에서 어노테이션 인터페이스를 파라미터로 지정하고 해당 파라미터를 통해 value를 얻어 사용하는 것을 알 수 있다.
+
+   - isValid 메소드의 파라미터 중 theCode에는 HTML form으로 부터 얻어진 데이터가 전달될 것이며 theConstraintValidatorContext는 추가적인 에러메시지를 위한 헬퍼 클래스의 객체이다.
+
+```java
+public class CourseCodeConstraintValidator implements ConstraintValidator<CourseCode,String> {
+  private String coursePrefix;
+
+  @Override
+  public void initialize(CourseCode theCourseCode){
+    coursePrefix = theCourseCode.value();
+  }
+
+  @Override
+  public boolean isValid(String theCode, ConstraintValidatorContext theConstraintValidatorContext){
+    boolean result;
+
+    if(theCode != null){
+      result = theCode.startsWith(coursePrefix);
+    }
+    else{
+      result = true;
+    }
+    return result;
+  }
+}
+```
+
+4. 작성한 어노테이션 적용.
+
+```java
+@CourseCode(value="LUV", message="must start with LUV")
+private String courseCode;
+```
