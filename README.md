@@ -39,6 +39,8 @@ Today I Learned.
 
 - [Spring MVC](./SPRING/spring_mvc.md)
 
+- [Hibernate](./SPRING/hibernate.md)
+
 ## GIT
 
 - [git 명령어](./GIT/git_command.md)
