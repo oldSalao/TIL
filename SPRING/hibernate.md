@@ -71,6 +71,12 @@ Hibernate를 사용하기 위한 과정은 아래와 같다.
 
 ### 2-1. Creating the Hibernate Configuration File
 
+build.gradle에 아래처럼 의존성을 주입.
+
+```gradle
+implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.5.0.Final'
+```
+
 src/main 폴더에 아래 hibernate.cfg.xml파일 추가
 
 ```xml
@@ -137,4 +143,141 @@ public class Student{
     private String firstName;
     ...
 }
+```
+
+## 3. Hibernate CRUD Features
+
+CRUD에 대한 설명에 앞서 짚고 넘어가야할 두가지 객체가 있다.
+
+- SessionFactory
+
+  - hibernate config file을 읽는다.
+
+  - Session 객체를 생성한다.
+
+  - Heavy-weight 객체이다.
+
+  - application에서 오직 한번 생성하고 필요할때마다 재사용한다.
+
+- Session
+
+  - JDBC connection을 Wrap한다.
+
+  - 객체를 저장하고 받아오는데에 주로 쓰이는 객체이다.
+
+  - Short-lived 객체이다. (작업을 수행할때마다 생성하여 사용하고 작업을 마치면 버린다.)
+
+  - SessionFactory 객체로부터 얻어진다.
+
+![](./common/images/hibernate_session.jpg)
+
+### 3-1. Creating and Saving Java Objects
+
+1. Java Code Setup.
+
+```java
+public static void main(String[] args) {
+
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Student.class).buildSessionFactory();
+
+        Session session = factory.getCurrentSession();
+
+        try{
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            factory.close();
+        }
+
+    }
+```
+
+2. Save Java Object.
+
+```java
+try{
+        // student 객체 생성
+        Student tempStudent = new Student("Paul","Wall","paul@gmail.com");
+
+        // 트랜잭션 시작
+        session.beginTransaction();
+
+        // student 객체 저장
+        session.save(tempStudent);
+
+        // 트랜잭션 커밋
+        session.getTransaction().commit();
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+
+    }finally {
+
+        factory.close();
+
+    }
+```
+
+이렇게 만들어진 어플리케이션을 실행하면 student 테이블에 컬럼 값으로 "Paul","Wall","paul@gmail.com"을 가진 행이 추가된다.
+
+### 3-2. Primary Keys
+
+Primary Key란?
+
+    각 행을 고유하게 식별할 수 있도록 해주는 컬럼. 값은 유일해야하며 Null이어서는 안된다.
+
+@Id 어노테이션으로 클래스내의 특정 필드를 Primary key임을 명시하고 데이터베이스에 이를 생성하도록 맡긴다.
+
+```java
+@Entity
+@Table(name="student")
+public class Student{
+    @Id
+    @Column(name="id")
+    private int id;
+
+    ...
+}
+```
+
+또한 생성하는 방식을 @GeneratedValue(strategy=GenerationType)으로 hibernate에게 넘김으로써 해당 방식으로 Primary key를 생성하도록 할 수도 있다.
+
+```java
+@Entity
+@Table(name="student")
+public class Student{
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTIFY)
+    @Column(name="id")
+    private int id;
+
+    ...
+}
+```
+
+Generation Strategie에는 아래와 같은 것들이 있다.
+
+![](./common/images/hibernate-primary-keys.jpg)
+
+추가적으로 사용자 정의 Generation Strategie를 사용할 수도 있다.
+
+1. org.hibernate.id.IdentifierGenerator 인터페이스를 구현.
+
+2. public Serializable generate() 메소드를 오버라이딩. 해당 메소드에 business logic을 작성한다.
+
+### 3-3. Reading Objects with Hibernate
+
+```java
+// 자바 객체 생성
+Student theStudent = new Student("Daffy","Duck","daffy@gmail.com");
+
+// 데이터 베이스에 저장
+session.save(theStudent);
+
+// primary key를 이용해서 데이터베이스 조회
+Student myStudent = session.get(Student.class, theStudent.getId());
+
 ```
