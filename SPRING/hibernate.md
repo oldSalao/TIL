@@ -270,6 +270,8 @@ Generation Strategie에는 아래와 같은 것들이 있다.
 
 ### 3-3. Reading Objects with Hibernate
 
+아래와 같이 데이터베이스에서 Java 객체를 얻을 수 있다. session.get()을 통해 조회하는 데이터가 존재하지 않는다면 null을 반환한다.
+
 ```java
 // 자바 객체 생성
 Student theStudent = new Student("Daffy","Duck","daffy@gmail.com");
@@ -277,7 +279,122 @@ Student theStudent = new Student("Daffy","Duck","daffy@gmail.com");
 // 데이터 베이스에 저장
 session.save(theStudent);
 
-// primary key를 이용해서 데이터베이스 조회
+// primary key를 이용해서 데이터베이스 조회, 자바 객체를 얻음.
 Student myStudent = session.get(Student.class, theStudent.getId());
 
+```
+
+예시
+
+```java
+public class ReadStudentDemo {
+
+    public static void main(String[] args) {
+
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Student.class).buildSessionFactory();
+
+        Session session = factory.getCurrentSession();
+
+        try{
+            // student 객체 생성
+            Student tempStudent = new Student("Daffy","Duck","daffy@gmail.com");
+
+            // 트랜잭션 시작
+            session.beginTransaction();
+
+            // student 객체 저장
+            session.save(tempStudent);
+
+            // 트랜잭션 커밋
+            session.getTransaction().commit();
+
+            // 새로운 세션을 얻는다.
+            session = factory.getCurrentSession();
+
+            // 트랜잭션 시작.
+            session.beginTransaction();
+
+            // primary key를 이용해 Student 객체를 얻음.
+            Student myStudent = session.get(Student.class, tempStudent.getId());
+
+            // 트랜잭션 커밋.
+            session.getTransaction().commit();
+
+        } finally {
+            factory.close();
+        }
+
+    }
+}
+```
+
+### 3-4. Querying Objects with Hibernate
+
+    HQL
+
+    - 객체를 얻어오기 위한 query lanquage
+
+    - SQL과 유사하다.(where, like, order by, join, in, etc...)
+
+아래는 Student 테이블의 모든 데이터를 객체로 얻는 예시이다. from Student에서 Student는 클래스 이름이다. 아래와 같은 쿼리를 작성하면 데이터베이스에서 모든 Student 객체를 얻어오게 된다.
+
+```java
+List<Student> theStudents = session.createQuery("from Student").getResultList();
+```
+
+아래는 where 절을 사용한 예시들이다.
+
+```java
+List<Student> theStudents = session.createQuery("from Student s where s.lastName='Doe'").getResultList();
+```
+
+```java
+List<Student> theStudents = session.createQuery("from Student s where s.lastName='Doe'"+"OR s.firstName='Daffy'").getResultList();
+```
+
+```java
+List<Student> theStudents = session.createQuery("from Student s where"+"s.email LIKE '%gmail.com'").getResultList();
+```
+
+### 3-5. Updating Objects with Hibernate
+
+session 객체를 통해 얻어온 Entity객체의 field를 setter로 변경하고 트랜잭션을 커밋하면 데이터베이스에 자동으로 반영된다.
+
+```java
+int studentId = 1;
+Student myStudent = session.get(Student.class, studentId);
+
+// first name을 "Scooby"로 update.
+myStudent.setFirstName("Scooby");
+
+//트랜잭션 커밋
+session.getTransaction().commit();
+```
+
+또는 아래와같이 update를 수행할 수도 있다.
+
+```java
+session.createQuery("update Student set email='foo@gmail.com'").excuteUpdate();
+```
+
+### 3-6. Deleting Objects with Hibernate
+
+아래와 같이 데이터베이스에서 특정 객체와 매핑되는 데이터를 삭제할 수 있다.
+
+```java
+int studentId = 1;
+
+Student myStudent = session.get(Student.class,studentId);
+
+//Student 삭제.
+session.delete(myStudent);
+
+//트랜잭션 커밋.
+session.getTransaction().commit();
+```
+
+아래와 같이 삭제를 수행할 수도 있다.
+
+```java
+session.createQuery("delete from Student where id=2").executeUpdate();
 ```
