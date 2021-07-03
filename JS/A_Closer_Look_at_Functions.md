@@ -188,3 +188,30 @@ const transformer = function (str, fn) {
 ```
 
 위의 예시에서 우리는 문자열 변환 코드를 oneword, upperFirstWord 함수로 추상화 하였기 때문에 transformer 함수에서 문자열이 어떻게 변환이 되는지는 신경쓸 필요가 없어졌으며 그저 추상화된 함수를 사용하면 되게 되었다. 즉, 우리는 연산과정을 낮은 수준의 추상적 단계(oneword, upperFirstWord)로 넘기고 높은 수준의 추상적 단계(transformer)에서 생각할 수 있게 된 것이다.
+
+## 5. Functions Returning Functions.
+
+함수는 함수를 반환할 수 있다. 예시는 아래와 같다.
+
+```js
+const greet = function (greeting) {
+  return function (name) {
+    console.log(`${greeting} ${name}`);
+  };
+};
+
+const greeterHey = greet("Hey");
+
+greeterHey("Jonas"); // Hey Jonas
+greeterHey("Steven"); // Hey Steven
+
+greet("Hello")("Jonas"); // Hello Jonas
+```
+
+위 예시를 보면 낯설고 불필요해 보일 수 있지만 함수형 프로그래밍 패러다임에 있어서는 유용하다.
+
+아래와 같이 화살표 함수로도 작성이 가능하다.
+
+```js
+const greet = (greeting) => (name) => console.log(`${greeting} ${name}`);
+```
