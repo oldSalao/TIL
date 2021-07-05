@@ -215,3 +215,67 @@ greet("Hello")("Jonas"); // Hello Jonas
 ```js
 const greet = (greeting) => (name) => console.log(`${greeting} ${name}`);
 ```
+
+## 6. The call and apply Methods
+
+### 6-1. call method
+
+함수의 call 메소드를 통해서 함수내에서 this 키워드가 어떤 대상을 가리키게 할 지 설정할 수 있다.
+
+아래와 같이 lufthansa, eurowings 객체가 있다고 할 때, lufthansa의 book 메소드를 book 변수에 할당한 후 eurowings에서도 재사용 할 수 있도록 하려면 어떻게 해야할까?
+
+```js
+const lufthansa = {
+  airline: "Lufthansa",
+  iataCode: "LH",
+  booking: [],
+  // book : function(){},
+  book(flightNum, name) {
+    console.log(
+      `${name} booked a seat on ${this.airline} flight ${this.iataCode} ${flightNum}`
+    );
+    this.booking.push({ flight: `${this.iataCode} ${flightNum}`, name });
+  },
+};
+
+const eurowings = {
+  airline: "Eurowings",
+  iataCode: "EW",
+  booking: [],
+};
+
+const book = lufthansa.book;
+
+// this 키워드가 undefined를 가리키므로 에러!
+// book(23, 'Sarah Williams');
+```
+
+call 메소드를 이용하면 book 함수의 this 키워드가 eurowings를 가리키도록 할 수 있다. call 메소드의 첫번째 argument는 this 키워드가 가리킬 객체, 나머지는 해당 함수의 arguments를 전달한다.
+
+```js
+book.call(eurowings, 23, "Sarah Williams"); // Sarah Williams booked a seat on Eurowings flight EW 23
+console.log(eurowings); // eurowings의 booking 배열을 확인해보면 요소가 book 함수의 call 메소드를 통해 요소가 추가된것을 알 수 있다.
+```
+
+### 6-2. apply method
+
+apply 메소드는 기본적으로 call 메소드와 같은 기능을 하지만 함수의 arguments로 배열을 받는다는 차이점이 있다
+
+```js
+const swiss = {
+  airline: "Swiss Air Line",
+  iataCode: "LX",
+  booking: [],
+};
+
+const flightData = [583, "George Cooper"];
+
+book.apply(swiss, flightData);
+console.log(swiss);
+```
+
+하지만 모던 자바스크립트에서 apply는 잘 사용하지 않는다. spread 연산자를 통해 call 메소드를 apply 메소드처럼 사용할 수도 있다.
+
+```js
+book.call(swiss, ...flightData);
+```
