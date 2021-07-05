@@ -279,3 +279,62 @@ console.log(swiss);
 ```js
 book.call(swiss, ...flightData);
 ```
+
+## 7. The bind Method
+
+call과 apply 말고도 bind 메소드로도 this 키워드가 가리킬 대상을 지정할 수 있다. bind가 위의 두 메소드와 다른 점은 this 키워드가 지정된 새로운 함수를 반환한다는 것이다. 메소드의 argument로 this가 가리킬 대상만 지정하거나, 함수의 parameter를 미리 세팅할수도 있다.
+
+```js
+// this가 가리킬 대상이 지정된 함수를 반환
+const bookEW = book.bind(eurowings);
+const bookLH = book.bind(lufthansa);
+const bookLX = book.bind(swiss);
+
+bookEW(76, "Steven Williams"); // Steven Williams booked a seat on Eurowings flight EW 76
+
+// this가 가리킬 대상을 지정하고, book 함수의 flightNum 파라미터를 23으로 고정한 함수를 반환.
+const bookEW23 = book.bind(eurowings, 23);
+
+bookEW23("Jonas Schmedtmann"); // Jonas Schmedtmann booked a seat on Eurowings flight EW 23
+bookEW23("Martha Cooper"); // Martha Cooper booked a seat on Eurowings flight EW 23
+```
+
+### 7-1. bind 메소드와 이벤트리스너
+
+아래와 같이 코드를 작성했다고 하자. 아래의 클릭 이벤트를 발생시키면 this가 lufthansa가 아닌 dom 요소를 가리킨다는 것을 알 수 있다. 따라서 원하는 결과를 얻지 못한다.
+
+```js
+//with Event Listeners
+lufthansa.planes = 300;
+lufthansa.buyPlane = function () {
+  console.log(this);
+  this.planes++;
+  console.log(this.planes);
+};
+
+//이벤트 핸들러 함수의 this는 항상 자신이 붙여진 dom 요소를 가리킨다. 따라서 클릭시 <button class="buy">Buy new plane 🛩</button>과 NAN 출력.
+document.querySelector(".buy").addEventListener("click", lufthansa.buyPlane);
+```
+
+이 때, bind 메소드를 활용하면 this가 lufthansa를 가리키도록 할 수 있고, 원하는 결과를 얻을 수 있다.
+
+```js
+document
+  .querySelector(".buy")
+  .addEventListener("click", lufthansa.buyPlane.bind(lufthansa));
+```
+
+### 7-2. Partial application
+
+bind 메소드는 아래와 같이 활용하기도 한다.
+
+```js
+const addTax = (rate, value) => value + value * rate;
+console.log(addTax(0.1, 200)); // 220
+
+const addVAT = addTax.bind(null, 0.23);
+// addVAT = value => value + value * 0.23;
+console.log(addVAT(100)); // 123
+```
+
+this 키워드를 사용하지 않으므로 null을 가리키도록 하고, addTax의 rate 파라미터를 0.23으로 지정한 새로운 함수를 반환하여 addVAT 함수를 만들었다. 이런 활용은 default parameter를 지정하는 것과 다를것이 없어 보이지만, 새로운 함수를 만들어낸다는 점에서 default parameter를 지정하는 방식과는 차이가 있다.
