@@ -374,3 +374,49 @@ booker(); // 1 passengers
 booker(); // 2 passengers
 booker(); // 3 passengers
 ```
+
+다른 예시들을 보자. 아래 예시를 보면 꼭 새로운 함수를 반환하는 것이 아니라 함수를 정의하고 할당하더라도 클로저가 적용되는 것을 알 수 있다.
+
+```js
+let f;
+
+const g = function () {
+  const a = 23;
+  f = function () {
+    console.log(a * 2);
+  };
+};
+
+const h = function () {
+  const b = 777;
+  f = function () {
+    console.log(b * 2);
+  };
+};
+
+g();
+f(); // 46 출력.
+console.dir(f); // scope의 closure를 확인해보면 {a : 23}이 있음.
+
+h();
+f(); // 1554 출력.
+console.dir(f); // scope의 closure를 확인해보면 {b : 777}이 있음.
+```
+
+아래 예시는 setTimeout 함수를 사용한 예시이다. 결과적으로는 boardPassengers 함수를 실행하면 setTimeout 함수가 wait \* 1000 ms 후에 실행된다. 이때 setTimeout 함수와는 별개로 boardPassengers 함수는 먼저 실행을 마치게 되고 실행 컨텍스트가 콜스택에서 제거된다. 이때 setTimeout 함수의 argument로 주어진 콜백 함수는 클로저가 적용되어 n, perGroup 변수에 접근이 가능하다. 한가지 더 살펴봐야할 부분은 클로저는 scope chain보다 우선순위가 높다는 것이다. 아래 예시를 보면 global scope에 perGroup 변수가 있지만, setTimeout 함수는 boardPassengers의 perGroup 변수를 사용하게 된다.
+
+```js
+const boardPassengers = function (n, wait) {
+  const perGroup = n / 3;
+
+  setTimeout(function () {
+    console.log(`We are now boarding all ${n} passengers`);
+    console.log(`There are 3 groups, each with ${perGroup} passengers`);
+  }, wait * 1000);
+
+  console.log(`Will start boarding in ${wait} seconds`);
+};
+
+const perGroup = 1000;
+boardPassengers(180, 3);
+```
