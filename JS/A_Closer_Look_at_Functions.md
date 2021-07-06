@@ -403,7 +403,7 @@ f(); // 1554 출력.
 console.dir(f); // scope의 closure를 확인해보면 {b : 777}이 있음.
 ```
 
-아래 예시는 setTimeout 함수를 사용한 예시이다. 결과적으로는 boardPassengers 함수를 실행하면 setTimeout 함수가 wait \* 1000 ms 후에 실행된다. 이때 setTimeout 함수와는 별개로 boardPassengers 함수는 먼저 실행을 마치게 되고 실행 컨텍스트가 콜스택에서 제거된다. 이때 setTimeout 함수의 argument로 주어진 콜백 함수는 클로저가 적용되어 n, perGroup 변수에 접근이 가능하다. 한가지 더 살펴봐야할 부분은 클로저는 scope chain보다 우선순위가 높다는 것이다. 아래 예시를 보면 global scope에 perGroup 변수가 있지만, setTimeout 함수는 boardPassengers의 perGroup 변수를 사용하게 된다.
+아래 예시는 setTimeout 함수를 사용한 예시이다. 결과적으로는 boardPassengers 함수를 실행하면 setTimeout 함수의 argument로 전달된 콜백 함수가 wait \* 1000 ms 후에 실행된다. 이때 setTimeout 함수와는 별개로 boardPassengers 함수는 먼저 실행을 마치게 되고 실행 컨텍스트가 콜스택에서 제거된다. 이때 setTimeout 함수의 argument로 주어진 콜백 함수는 클로저가 적용되어 n, perGroup 변수에 접근이 가능하다. 한가지 더 살펴봐야할 부분은 클로저는 scope chain보다 우선순위가 높다는 것이다. 아래 예시를 보면 global scope에 perGroup 변수가 있지만, setTimeout 함수는 boardPassengers의 perGroup 변수를 사용하게 된다.
 
 ```js
 const boardPassengers = function (n, wait) {
