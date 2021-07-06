@@ -338,3 +338,39 @@ console.log(addVAT(100)); // 123
 ```
 
 this 키워드를 사용하지 않으므로 null을 가리키도록 하고, addTax의 rate 파라미터를 0.23으로 지정한 새로운 함수를 반환하여 addVAT 함수를 만들었다. 이런 활용은 default parameter를 지정하는 것과 다를것이 없어 보이지만, 새로운 함수를 만들어낸다는 점에서 default parameter를 지정하는 방식과는 차이가 있다.
+
+## 8. Immediately Invoked Function Expressions (IIFE)
+
+함수를 재사용하지 않고 오직 한번만 실행하는 방법. async/await에 사용된다.
+
+```js
+(function () {
+  console.log("this will never run again");
+  const isPrivate = 23;
+})();
+
+// console.log(isPrivate) // error
+
+(() => console.log("this will never run again"))();
+```
+
+## 9. Closures
+
+아래와 같이 함수 안에 내부함수가 정의 되었을 때, 외부함수의 실행컨텍스트가 콜스택에서 제거 되더라도 내부함수가 외부함수의 환경(스코프)을 기억하여 스코프 체인을 통해 그 환경(스코프)에 접근이 가능하게끔 하는 것을 클로저라고 한다.
+
+```js
+const secureBooking = function () {
+  let passengerCount = 0;
+
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers`);
+  };
+};
+
+const booker = secureBooking();
+
+booker(); // 1 passengers
+booker(); // 2 passengers
+booker(); // 3 passengers
+```
