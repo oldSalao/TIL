@@ -15,7 +15,9 @@ Today I Learned.
 
 - [Data Structures and Modern Operators](./JS/Data_Structures_and_Modern_Operators.md)
 
-- [A Closer Look at Functions](/JS/A_Closer_Look_at_Functions.md)
+- [A Closer Look at Functions](./JS/A_Closer_Look_at_Functions.md)
+
+- [Working With Arrays](./JS/Working_With_Arrays.md)
 
 ## Java
 
