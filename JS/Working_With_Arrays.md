@@ -91,4 +91,30 @@ movements.forEach((e, i) => {
 });
 ```
 
-forEach메소드와 for of 문의 차이점은 forEach 메소드는 break, continue를 사용할 수 없다는 것이다.
+forEach 메소드와 for of 문의 차이점은 forEach 메소드는 break, continue를 사용할 수 없다는 것이다.
+
+## 3. forEach With Maps and Sets
+
+forEach 메소드는 Map과 Set에도 사용할 수 있다. 배열의 forEach와는 조금 다른 부분이 있는데 우선 map의 forEach 콜백함수의 파라미터는 순서대로 value, key, map 이다. 다음으로 set의 forEach 콜백함수는 두번째 파라미터가 key가 아니라 value가 된다. 즉, 파라미터는 순서대로 value, value, set이다.
+
+```js
+//Map
+const currencies = new Map([
+  ["USD", "United States dollar"],
+  ["EUR", "Euro"],
+  ["GBP", "Pound sterling"],
+]);
+
+currencies.forEach((value, key, map) => {
+  console.log(`${key} : ${value}`);
+}); // USD : United States dollar / EUR : Euro / GBP : Pound sterling
+
+//Set
+const currenciesUnique = new Set(["USD", "GBP", "USD", "EUR", "EUR"]);
+
+console.log(currenciesUnique); // Set(3) {"USD", "GBP", "EUR"}
+
+currenciesUnique.forEach((value, value2, set) => {
+  console.log(`${value} : ${value2}`);
+}); // USD : USD / GBP : GBP / EUR : EUR
+```
