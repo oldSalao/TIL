@@ -62,3 +62,33 @@ console.log([...arr, ...arr2]); // ["a", "b", "c", "d", "e", "f", "g", "h", "i",
 ```js
 console.log(letters.join(" - ")); // a - b - c - d - e - f - g - h - i - j
 ```
+
+## 2. Looping Arrays: forEach
+
+forEach 메소드는 고차함수로서 콜백함수를 argument로 받는다. 배열의 모든 요소를 순회하며 각 요소에 대해 콜백함수를 실행한다. 콜백함수에 파라미터를 지정하면 그 파라미터에는 현재 요소가 argument로 전달되게 된다.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+movements.forEach((e) => {
+  if (e > 0) {
+    console.log(`You deposited ${e}`);
+  } else {
+    console.log(`You withdrew ${Math.abs(e)}`);
+  }
+});
+```
+
+콜백함수의 파라미터는 여러개 지정할수도 있는데 순서대로 value, index, array가 된다.
+
+```js
+movements.forEach((e, i) => {
+  if (e > 0) {
+    console.log(`Movement ${i + 1} : You deposited ${e}`);
+  } else {
+    console.log(`Movement ${i + 1} : You withdrew ${Math.abs(e)}`);
+  }
+});
+```
+
+forEach메소드와 for of 문의 차이점은 forEach 메소드는 break, continue를 사용할 수 없다는 것이다.
