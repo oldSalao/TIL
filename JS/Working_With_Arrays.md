@@ -166,3 +166,17 @@ const movementsDescriptions = movements.map((e, i) => {
 
 console.log(movementsDescriptions); // ["Movement 1 : You deposited 200", "Movement 2 : You deposited 450", "Movement 3 : You withdrew 400", "Movement 4 : You deposited 3000", "Movement 5 : You withdrew 650", "Movement 6 : You withdrew 130", "Movement 7 : You deposited 70", "Movement 8 : You deposited 1300"]
 ```
+
+## 6. The filter Method
+
+filter 메소드는 배열의 각 요소를 순회하며 콜백 함수를 실행하고 콜백 함수의 반환값이 true일 때에 해당하는 요소들만으로 새로운 배열을 생성하여 반환한다. 콜백 함수의 파라미터는 map과 동일하다.
+
+filter 메소드의 사용 예시를 보자.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const deposits = movements.filter((e) => e > 0);
+
+console.log(deposits); // [200, 450, 3000, 70, 1300]
+```
