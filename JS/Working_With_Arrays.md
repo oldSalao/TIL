@@ -118,3 +118,23 @@ currenciesUnique.forEach((value, value2, set) => {
   console.log(`${value} : ${value2}`);
 }); // USD : USD / GBP : GBP / EUR : EUR
 ```
+
+## 4. Data Transformations: map, filter, reduce
+
+자바 스크립트에는 데이터 변환을 위해 주로 사용하는 중요한 3가지 Array 메소드가 있다. 이 메소드들은 주로 배열로부터 변환된 데이터를 갖는 새로운 배열을 생성한다. 해당하는 메소드는 바로 map, filter, reduce이다.
+
+![](./common/images/map_filter_reduce.jpg)
+
+### 4-1. map
+
+forEach와 같이 배열의 모든 요소를 순회한다. forEach와의 차이점은 기존 배열을 기반으로 새로운 배열을 생성한다는 것이다. 각각의 요소에 대해 콜백 함수를 실행하고 콜백 함수는 새로운 배열의 요소를 반환하며 결과적으로 map은 그 요소들로 이루어진 새로운 배열을 반환한다.
+
+### 4-2. filter
+
+이름 그대로 기존 배열의 요소를 특정 조건에 따라 필터링하는 메소드이다. map과 마찬가지로 새로운 배열을 반환한다.
+
+### 4-3. reduce
+
+배열의 모든 요소를 하나의 값으로 줄여서 반환한다. ( ex. 배열의 모든 요소의 합 ) accumulator와 순회할때 각각의 요소에 해당하는 current value를 사용한다. 활용도가 높다.
+
+## 5. The map Method
