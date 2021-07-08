@@ -138,3 +138,31 @@ forEach와 같이 배열의 모든 요소를 순회한다. forEach와의 차이�
 배열의 모든 요소를 하나의 값으로 줄여서 반환한다. ( ex. 배열의 모든 요소의 합 ) accumulator와 순회할때 각각의 요소에 해당하는 current value를 사용한다. 활용도가 높다.
 
 ## 5. The map Method
+
+map 메소드의 사용 예시를 살펴보자.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToUsd = 1.1;
+
+const movementsUSD = movements.map((e) => {
+  return Math.floor(e * eurToUsd);
+});
+
+console.log(movements); // [200, 450, -400, 3000, -650, -130, 70, 1300]
+console.log(movementsUSD); // [220, 495, -441, 3300, -716, -143, 77, 1430]
+```
+
+map을 이용해 movements의 각각의 요소에 1.1을 곱한 값을 요소로 갖는 movementsUSD라는 배열을 얻었다.
+
+map 메소드는 forEach 메소드와 같은 파라미터를 지니고 있다. 순서대로 value, index, array이다.
+
+```js
+const movementsDescriptions = movements.map((e, i) => {
+  return `Movement ${i + 1} : You ${
+    e > 0 ? "deposited" : "withdrew"
+  } ${Math.abs(e)}`;
+});
+
+console.log(movementsDescriptions); // ["Movement 1 : You deposited 200", "Movement 2 : You deposited 450", "Movement 3 : You withdrew 400", "Movement 4 : You deposited 3000", "Movement 5 : You withdrew 650", "Movement 6 : You withdrew 130", "Movement 7 : You deposited 70", "Movement 8 : You deposited 1300"]
+```
