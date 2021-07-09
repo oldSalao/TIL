@@ -180,3 +180,33 @@ const deposits = movements.filter((e) => e > 0);
 
 console.log(deposits); // [200, 450, 3000, 70, 1300]
 ```
+
+## 7. The reduce Method
+
+reduce 메소드는 기본적으로 배열의 모든 요소를 하나의 값으로 축소시킨다. reduce 메소드의 콜백 함수가 지니는 파라미터는 map, filter와는 조금 다르다. 순서대로 accumulator, current value, index, array이다. accumulator는 값을 계속 축적한다. 마치 스노우 볼과도 같다. 배열의 각 요소를 순회하며 실행되는 콜백 함수가 반환하는 값은 다음 실행에 사용될 accumulator의 값이 된다. 그리고 reduce 메소드는 콜백 함수 말고도 하나의 파라미터를 더 지니고 있는데 이것은 accumulator의 초깃값이다.
+
+아래 예시는 reduce 메소드를 활용하여 movements 배열의 모든 요소의 합을 구하는 예시다.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const balance = movements.reduce((acc, cur, i, arr) => {
+  return acc + cur;
+}, 0);
+
+console.log(balance); // 3840.
+```
+
+또 다른 예시를 보자. 아래 예시는 reduce를 활용하여 movements 배열의 최댓값을 구하는 예시이다.
+
+```js
+const max = movements.reduce((acc, cur) => {
+  if (cur > acc) {
+    return cur;
+  } else {
+    return acc;
+  }
+}, movements[0]);
+
+console.log(max);
+```
