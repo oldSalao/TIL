@@ -210,3 +210,24 @@ const max = movements.reduce((acc, cur) => {
 
 console.log(max);
 ```
+
+## 8. The Magic of Chaining Methods
+
+map, filter와 같은 메소드들은 배열을 반환한다는 점을 활용하여 아래와 같이 연결이 가능하다. 유용하지만 성능 저하를 일으킬 수 있으므로 과용하지는 말자. 또한 배열을 변형시키는 splice, reverse와 같은 메소드는 연결하지 않는 것이 좋다.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const eurToUsd = 1.1;
+
+const totalDepositsUSD = movements
+  .filter((e) => {
+    return e > 0;
+  })
+  .map((e) => {
+    return Math.floor(e * eurToUsd);
+  })
+  .reduce((acc, cur) => {
+    return acc + cur;
+  }, 0);
+console.log(totalDepositsUSD); // 5522
+```
