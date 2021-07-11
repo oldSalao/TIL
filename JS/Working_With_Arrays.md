@@ -231,3 +231,15 @@ const totalDepositsUSD = movements
   }, 0);
 console.log(totalDepositsUSD); // 5522
 ```
+
+## 9. The find Method
+
+filter 메소드와 유사하나 새로운 배열을 생성해서 반환하는 것이 아니라 조건을 만족하는 첫번째 요소를 반환한다는 것에 차이점이 있다.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const firstWithdrawal = movements.find((e) => e < 0);
+
+console.log(firstWithdrawal); // -400
+```
