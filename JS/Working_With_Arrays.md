@@ -328,3 +328,24 @@ const overalBalance = accounts
   .flatMap((e) => e.movements)
   .reduce((acc, cur) => acc + cur, 0);
 ```
+
+## 13. Sorting Arrays
+
+sort는 자바스크립트에 내장된 정렬메소드이다. 원본 배열을 변형시킨다. 아래 예시는 문자열을 요소로 갖는 배열을 정렬하는 예시이다. default는 문자열을 기반으로 하여 순차적으로 정렬한다.
+
+```js
+const owners = ["Jonas", "Zach", "Adam", "Martha"];
+
+console.log(owners.sort()); // ["Adam", "Jonas", "Martha", "Zach"]
+console.log(owners); // ["Adam", "Jonas", "Martha", "Zach"]
+```
+
+다음 예시는 숫자를 요소로 갖는 배열을 정렬하는 예시이다. 콜백함수를 전달하지 않으면 문자열을 기반으로 정렬이 되므로 숫자의 크기에 따라 정렬되지 않는다. 콜백 함수를 사용하면 숫자의 크기에 따라 정렬이 가능한데 콜백함수의 첫번째 파라미터는 현재값이고 두번째 파라미터는 다음값이다. 이 두 값을 이용해서 정렬을 하게 되는데, 반환값이 0보다 작다면 a와 b의 위치가 바뀌지 않지만 0보다 크다면 위치가 바뀌며 정렬이 이루어진다.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+console.log(movements.sort()); // [-130, -400, -650, 1300, 200, 3000, 450, 70]
+console.log(movements.sort((a, b) => a - b)); // [-650, -400, -130, 70, 200, 450, 1300, 3000]
+console.log(movements.sort((a, b) => b - a)); // [3000, 1300, 450, 200, 70, -130, -400, -650]
+```
