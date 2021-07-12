@@ -234,7 +234,7 @@ console.log(totalDepositsUSD); // 5522
 
 ## 9. The find Method
 
-filter 메소드와 유사하나 새로운 배열을 생성해서 반환하는 것이 아니라 조건을 만족하는 첫번째 요소를 반환한다는 것에 차이점이 있다.
+filter 메소드와 유사하나 새로운 배열을 생성해서 반환하는 것이 아니라 조건을 만족하는 첫번째 요소를 반환한다는 것에 차이점이 있다. 콜백 함수를 파라미터로 가짐.
 
 ```js
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
@@ -242,4 +242,42 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 const firstWithdrawal = movements.find((e) => e < 0);
 
 console.log(firstWithdrawal); // -400
+```
+
+## 10. The findIndex Method
+
+find 메소드와 유사하나 요소가 아닌 인덱스를 반환한다는 차이점이 있음. find와 마찬가지로 조건을 만족하는 첫번째 요소의 인덱스를 반환함. 콜백 함수를 파라미터로 가짐.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const index = movements.findIndex((e) => e < 0);
+
+console.log(index); // 2
+```
+
+## 11. some and every
+
+### 11-1. some
+
+includes 와 유사하나 includes 로는 오직 주어진 값과 일치하는 요소가 있는지만을 알 수 있지만 some으로는 특정 조건을 만족하는 요소가 있는지에 대한 여부를 알 수 있다. 콜백 함수를 파라미터로 지니고 있다.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+console.log(movements.includes(-130)); // true
+
+const anyDeposits = movements.some((e) => e > 0);
+console.log(anyDeposits); // true
+```
+
+### 11-2. every
+
+some 메소드와 유사함. 모든 요소가 조건을 만족할때에만 true를 반환한다는 차이점이 있다.
+
+```js
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+console.log(movements.every((e) => e > 0)); // false
+console.log(movements.filter((e) => e > 0).every((e) => e > 0)); // true
 ```
