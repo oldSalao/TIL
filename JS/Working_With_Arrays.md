@@ -281,3 +281,50 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 console.log(movements.every((e) => e > 0)); // false
 console.log(movements.filter((e) => e > 0).every((e) => e > 0)); // true
 ```
+
+## 12. flat and flatMap
+
+### 12-1. flat
+
+중첩된 배열을 1차원 배열로 생성하여 반환해준다.
+
+```js
+const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+
+console.log(arr.flat()); // [1,2,3,4,5,6,7,8]
+```
+
+Default로는 이차원 배열까지만 적용이 된다는 점을 알아두자.
+
+```js
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+
+console.log(arrDeep.flat()); // [[1, 2], 3, 4, [5, 6], 7, 8]
+```
+
+파라미터에 Depth 값을 전달하면 2차원 이상의 다차원 배열도 1차원 배열로 만들 수 있다. (Default 값은 1이다.)
+
+```js
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+
+console.log(arrDeep.flat(2)); // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+### 12-2. flatMap
+
+flatMap 은 flat과 map 메소드가 결합된 것이라고 볼 수 있다. 아래와 같은 코드가 있다고 한다면
+
+```js
+const overalBalance = accounts
+  .map((e) => e.movements)
+  .flat()
+  .reduce((acc, cur) => acc + cur, 0);
+```
+
+아래와같이 flatMap으로 대체가 가능하다.
+
+```js
+const overalBalance = accounts
+  .flatMap((e) => e.movements)
+  .reduce((acc, cur) => acc + cur, 0);
+```
