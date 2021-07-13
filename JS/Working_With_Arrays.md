@@ -349,3 +349,73 @@ console.log(movements.sort()); // [-130, -400, -650, 1300, 200, 3000, 450, 70]
 console.log(movements.sort((a, b) => a - b)); // [-650, -400, -130, 70, 200, 450, 1300, 3000]
 console.log(movements.sort((a, b) => b - a)); // [3000, 1300, 450, 200, 70, -130, -400, -650]
 ```
+
+## 14. More Ways of Creating and Filling Arrays
+
+### 14-1. Array constructor
+
+Array 생성자 함수를 통해 배열을 생성할 수 있다. 파라미터는 요소의 갯수이다. 요소로 아무것도 할당하지 않으면 empty로 나타나는데, empty 요소는 forEach, map 등의 메소드의 영향을 받지 않는다.
+
+```js
+const x = new Array(7);
+console.log(x); // [empty × 7]
+console.log(x.map((e) => 5)); // [empty × 7]
+x.forEach((e) => {
+  console.log(e);
+}); // 아무것도 출력되지 않음.
+```
+
+### 14-2. fill method
+
+배열의 요소를 특정 값으로 채운다. 첫번째 파라미터는 채울 값을 전달받으며 두번째 파라미터로 값을 채울 시작 인덱스, 세번째 파라미터로 끝 인덱스를 지정할 수도 있다.
+
+```js
+const x = new Array(7).fill(1);
+
+console.log(x); // [1, 1, 1, 1, 1, 1, 1]
+```
+
+### 14-3. Array.from()
+
+Array는 함수지만 form 이라는 메소드를 지니고 있다. 추후 OOP를 배울때 다시한번 짚고 넘어갈 것이다. 첫번째 파라미터에는 객체를 넘겨주고, 두번째 파라미터에는 콜백 함수를 넘겨준다. 여기서 콜백 함수는 map 메소드에 넘기는 콜백 함수와 동일하게 작동한다고 보면 된다. 넘겨진 객체(아래 예시에서는 length 프로퍼티만 지닌 객체를 넘겼으므로 모든 요소는 undefined)의 각 요소가 순회하는 콜백 함수의 반환값으로 채워진 배열이 생성된다.
+
+```js
+const y = Array.from({ length: 7 }, () => 2);
+
+console.log(y); // [2, 2, 2, 2, 2, 2, 2]
+```
+
+콜백 함수의 파라미터에 값을 넘기면 아래와 같이 작동한다.
+
+```js
+const z = Array.from({ length: 7 }, (_, i) => i + 1);
+
+console.log(z); // [1, 2, 3, 4, 5, 6, 7]
+```
+
+Array.from 메소드를 활용해서 배열이 아닌 iterable 객체(Map, Set, NodeList)를 배열로 변환할 수 있다. 아래 활용 예시들을 보자. 이와 같은 작업은 스프레드 연산자를 통해서도 가능하다.
+
+```js
+const movementsUI = Array.from(document.querySelectorAll(".movements__value"));
+
+console.log(document.querySelectorAll(".movements__value")); // NodeList(2) [div.movements__value, div.movements__value]
+console.log(movementsUI); // [div.movements__value, div.movements__value]
+```
+
+```js
+const movementsUI = Array.from(
+  document.querySelectorAll(".movements__value"),
+  (e) => e.textContent.replace("€", "")
+);
+
+console.log(document.querySelectorAll(".movements__value")); // NodeList(2) [div.movements__value, div.movements__value]
+
+console.log(movementsUI); // [4000, -378]
+```
+
+```js
+const movementsUI = [...document.querySelectorAll(".movements__value")];
+
+console.log(document.querySelectorAll(".movements__value")); // NodeList(2) [div.movements__value, div.movements__value]
+console.log(movementsUI); // [div.movements__value, div.movements__value]
+```
