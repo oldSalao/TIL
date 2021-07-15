@@ -419,3 +419,9 @@ const movementsUI = [...document.querySelectorAll(".movements__value")];
 console.log(document.querySelectorAll(".movements__value")); // NodeList(2) [div.movements__value, div.movements__value]
 console.log(movementsUI); // [div.movements__value, div.movements__value]
 ```
+
+## 15. Summary: Which Array Method to Use?
+
+아래 이미지처럼 목적, 상황에따라 적절한 메소드를 사용하도록 하자.
+
+![](./common/images/array_method_use.jpg)
