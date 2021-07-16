@@ -137,4 +137,45 @@ console.log((2.7).toFixed(3)); // '2.700'
 console.log(+(2.345).toFixed(2)); // 2.35. 반올림을 수행함.
 ```
 
-## 3. The Remainder Operator
+## 3. Working with BigInt
+
+es2020에서 등장한 정수의 특별한 타입. 기본적으로 Number타입은 64비트로 표현된다. 이중에서 실질적으로 수를 저장하는데 사용되는 비트는 53비트이다. 나머지는 소수점의 위치와 부호를 저장하기 위해 쓰인다. 53비트로 표현할 수 있는 수에는 제한이 있기때문에 제한보다 더 큰 수를 저장하고 사용하기 위해서는 BigInt를 사용하면 된다.
+
+숫자끝에 n을 붙이거나 BigInt 메소드를 사용한다. 아래 예시를 보면 두가지 경우의 값이 다르다. BigInt 메소드를 사용한 결과가 정확하지 않기 때문이다. 이는 먼저 자바스크립트가 해당 숫자를 내부적으로 나타내고 BigInt로 변환하는 과정에서 문제가 생기는 것으로 보인다. 따라서 BigInt 메소드는 작은 수가 BigInt 형을 요구할 때 사용하도록 하자.
+
+```js
+console.log(534252345345683495683490589203589230482n); // 534252345345683495683490589203589230482n
+console.log(BigInt(534252345345683495683490589203589230482)); // 534252345345683531517394623281907105792n
+```
+
+BigInt는 연산이 가능하다. 하지만 일반 Number 타입의 값과는 연산이 불가능하다.(에러 발생)
+
+```js
+console.log(10000n + 10000n); // 20000n
+console.log(3242592305893205892306893405689430n * 1000000n); // 3242592305893205892306893405689430000000n
+
+const huge = 23178947281394789789n;
+const num = 23;
+// console.log(huge * num); // error!
+console.log(huge * BigInt(num)); // 533115787472080165147n
+
+console.log(20n > 15); // true
+console.log(20n === 20); // false. BigInt와 Number는 다르다.
+console.log(typeof 20n); // bigint
+console.log(20n == 20); // true. 강제 형변환이 이루어진다.
+
+console.log(huge + " is Really Big!!"); // 23178947281394789789 is Really Big!! 문자열과 결합되면 n이 사라지고 문자열로 형변환이 된다.
+```
+
+BigInt에는 Math의 메소드를 사용할 수 없다.
+
+```js
+// console.log(Math.sqrt(huge)); // error! BigInt에는 Math의 메소드를 사용할 수 없다.
+```
+
+BigInt에 나누기 연산을 수행하면 소수부분은 표현되지 않는다.
+
+```js
+console.log(10n / 3n); // 3n. 소수부분이 제거된다.
+console.log(10 / 3); // 3.333333...
+```
