@@ -19,6 +19,8 @@ Today I Learned.
 
 - [Working With Arrays](./JS/Working_With_Arrays.md)
 
+- [Numbers, Dates, Intl and Timers](./JS/Numbers_Dates_Intl_and_Timers.md)
+
 ## Java
 
 ## ORACLE
