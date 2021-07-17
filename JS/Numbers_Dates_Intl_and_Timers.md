@@ -179,3 +179,54 @@ BigInt에 나누기 연산을 수행하면 소수부분은 표현되지 않는�
 console.log(10n / 3n); // 3n. 소수부분이 제거된다.
 console.log(10 / 3); // 3.333333...
 ```
+
+## 4. Creating Dates
+
+자바스크립트에서 날짜,시간과 관련된 프로그래밍을 하기 위해서는 Date라는 특수한 객체를 사용한다.
+
+```js
+const now = new Date();
+
+console.log(now); // Sat Jul 17 2021 13:09:19 GMT+0900 (대한민국 표준시)
+```
+
+파라미터에 문자열을 전달하면 자바스크립트가 해당 문자열을 파싱하여 날짜를 반환한다. 하지만 신뢰하지 못할 경우가 있으므로 사용을 자제하도록 하자.
+
+```js
+console.log(new Date("Jul 17 2021 13:07:40")); //Sat Jul 17 2021 13:08:15 GMT+0900 (대한민국 표준시)
+console.log(new Date("December 24, 2021")); // Fri Dec 24 2021 00:00:00 GMT+0900 (대한민국 표준시)
+```
+
+연,월,일,시,분,초,ms 순서대로 숫자를 파라미터에 전달하는 것도 가능하다. 월은 0부터 시작인 것에 유의하자(10은 11월). 만약 일수가 해당 월의 일수를 넘어가면 자동으로 다음 월의 날짜로 이어져 알맞은 시간을 얻어낸다.
+
+```js
+console.log(new Date(2037, 10, 19, 15, 23, 5)); // Thu Nov 19 2037 15:23:05 GMT+0900 (대한민국 표준시)
+console.log(new Date(2037, 10, 33)); // Thu Dec 03 2037 00:00:00 GMT+0900 (대한민국 표준시)
+```
+
+파라미터에 타임스탬프를 전달할 수도 있다. 타임스탬프란 1970 1월 1일 00:00:00에서부터 경과된 시간을 ms 단위로 표현한 것이다.
+
+```js
+console.log(new Date(1000)); // Thu Jan 01 1970 09:00:01 GMT+0900 (대한민국 표준시)
+```
+
+Date 객체는 몇가지 메소드를 지니고 있다. 아래 예시를 살펴보자.
+
+```js
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(future); // Thu Nov 19 2037 15:23:00 GMT+0900 (대한민국 표준시).
+console.log(future.getFullYear()); // 2037. Date 객체의 연도를 반환하는 메소드.
+console.log(future.getMonth()); // 10. 월을 반환하는 메소드.
+console.log(future.getDate()); // 19. 일을 반환하는 메소드.
+console.log(future.getDay()); // 4. 요일을 반환하는 메소드. 일요일이 0이다.
+console.log(future.getHours()); // 15. 시를 반환하는 메소드.
+console.log(future.getMinutes()); // 23. 분을 반환하는 메소드.
+console.log(future.getSeconds()); // 0. 초를 반환하는 메소드.
+console.log(future.toISOString()); //2037-11-19T06:23:00.000Z. ISO를 따르는 문자열을 반환.
+console.log(future.getTime()); // 2142224580000. 타임스탬프를 반환하는 메소드.
+
+console.log(Date.now()); // 1626496107242. 현재 시간의 타임스탬프를 반환함.
+
+future.setFullYear(2040); // Date의 연,월,시 등을 셋팅할 수 있다.
+console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0900 (대한민국 표준시)
+```
