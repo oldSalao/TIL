@@ -252,3 +252,73 @@ const days2 = calcDaysPassed(
 );
 console.log(days2); // 10.4222222222...
 ```
+
+## 5. Internationalizing Dates (Intl)
+
+자바스크립트는 Intl이라는 국제화 API를 가지고 있다. 이를 이용하여 날짜,시간에 각국의 언어에 맞는 포맷을 적용할 수 있다. 아래 예시는 DateTimeFormat을 활용해서 Date에 포맷을 적용시키는 예이다. DateTimeFormat에는 ISO language code가 들어간다. 테이블을 참고하여 사용하자. ( http://www.lingoes.net/en/translator/langcode.htm )
+
+```js
+console.log(new Intl.DateTimeFormat("ko-KR").format(new Date())); // 2021. 7. 18.
+console.log(new Intl.DateTimeFormat("en-US").format(new Date())); // 7/18/2021
+```
+
+아래와 같이 DateTimeFormat의 두번째 파라미터에 객체를 전달함으로써 원하는 포맷을 구성할 수도 있다. 프로퍼티의 값으로는 'numeric','long','2-digit','short','narrow' 등을 사용할 수 있다. (참고 : https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat )
+
+```js
+const options = {
+  hour: "numeric",
+  minute: "numeric",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  weekday: "long",
+};
+
+console.log(new Intl.DateTimeFormat("ko-KR", options).format(new Date())); // 2021년 7월 18일 일요일 오후 7:23
+```
+
+첫번째 파라미터에 전달될 locale 값은 navigator를 통해 브라우저에서 정보를 얻어와 전달할 수도 있겠다.
+
+```js
+console.log(navigator.language); // ko-KR
+```
+
+## 6. Internationalizing Numbers (Intl)
+
+Intl은 날짜,시간 뿐만 아니라 숫자에 대해서도 포맷을 적용시킬 수 있다. NumberFormat 메소드를 이용하는데, DateFormat과 마찬가지로 locale 파라미터를 지니고 있다.
+
+```js
+const num = 3884764.23;
+
+console.log(new Intl.NumberFormat("en-US").format(num)); // 3,884,764.23
+console.log(new Intl.NumberFormat("ar-SY").format(num)); // ٣٬٨٨٤٬٧٦٤٫٢٣
+```
+
+객체를 두번째 파라미터에 전달해서 포맷을 지정할 수도 있다. 아래 예시는 단위를 지정한 것이다.
+
+```js
+const num = 3884764.23;
+const options = {
+  style: "unit",
+  unit: "mile-per-hour",
+};
+
+console.log(new Intl.NumberFormat("en-US", options).format(num)); // 3,884,764.23 mph
+console.log(new Intl.NumberFormat("ar-SY", options).format(num)); //ميل/س٣٬٨٨٤٬٧٦٤٫٢٣
+```
+
+아래 예시는 통화 단위를 지정한 것이다.
+
+```js
+const num = 3884764.23;
+const options = {
+  style: "currency",
+  currency: "EUR",
+};
+
+console.log(new Intl.NumberFormat("en-US", options).format(num)); // €3,884,764.23
+console.log(new Intl.NumberFormat("ar-SY", options).format(num)); // ٣٬٨٨٤٬٧٦٤٫٢٣ €
+```
+
+옵션은 MDN을 참고하여 작성하자.
+( https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat )
