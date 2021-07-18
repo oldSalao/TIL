@@ -231,7 +231,7 @@ future.setFullYear(2040); // Date의 연,월,시 등을 셋팅할 수 있다.
 console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0900 (대한민국 표준시)
 ```
 
-## 4. Operations With Dates
+## 5. Operations With Dates
 
 타임스탬프를 통한 연산이 가능하다. Date 객체는 숫자로 형변환이 가능한데 형변환 시 타임스탬프를 얻을 수 있다. 아래 예시를 살펴보자. 날짜의 차이를 구하는 함수 calcDaysPassed를 구현했다. 만약 복잡한 연산이 요구된다면 moment.js 라이브러리를 사용하도록 하자.
 
@@ -253,7 +253,7 @@ const days2 = calcDaysPassed(
 console.log(days2); // 10.4222222222...
 ```
 
-## 5. Internationalizing Dates (Intl)
+## 6. Internationalizing Dates (Intl)
 
 자바스크립트는 Intl이라는 국제화 API를 가지고 있다. 이를 이용하여 날짜,시간에 각국의 언어에 맞는 포맷을 적용할 수 있다. 아래 예시는 DateTimeFormat을 활용해서 Date에 포맷을 적용시키는 예이다. DateTimeFormat에는 ISO language code가 들어간다. 테이블을 참고하여 사용하자. ( http://www.lingoes.net/en/translator/langcode.htm )
 
@@ -283,7 +283,7 @@ console.log(new Intl.DateTimeFormat("ko-KR", options).format(new Date())); // 20
 console.log(navigator.language); // ko-KR
 ```
 
-## 6. Internationalizing Numbers (Intl)
+## 7. Internationalizing Numbers (Intl)
 
 Intl은 날짜,시간 뿐만 아니라 숫자에 대해서도 포맷을 적용시킬 수 있다. NumberFormat 메소드를 이용하는데, DateFormat과 마찬가지로 locale 파라미터를 지니고 있다.
 
