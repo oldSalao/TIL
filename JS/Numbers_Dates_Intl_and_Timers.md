@@ -322,3 +322,64 @@ console.log(new Intl.NumberFormat("ar-SY", options).format(num)); // ٣٬٨٨٤�
 
 옵션은 MDN을 참고하여 작성하자.
 ( https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat )
+
+## 8. Timers: setTimeout and setInterval
+
+자바스크립트에는 두가지 타이머가 있다. 바로 setTimeout과 setInterval이다. setTimeout은 특정 시간이 경과하면 한번만 실행되지만 setInterval은 우리가 멈추지 않는 한 지속적으로 실행된다.
+
+### 8-1. setTimeout
+
+첫번째 파라미터는 콜백 함수를 전달받으며, 두번째 파라미터는 ms단위의 시간을 전달받는다. 두번째 파라미터에 전달한 시간이 경과하면 콜백 함수를 실행한다. 이때 지정한 시간동안 코드 실행은 멈추지않고 계속된다. 따라서 예시의 출력은 아래와 같이 나타난다.
+
+    Waiting...
+    Hello
+
+```js
+setTimeout(() => console.log("Hello"), 3000); // 3초후 Hello 출력.
+console.log("Waiting..."); // Waiting...
+```
+
+위의 코드에서 자바스크립트는 setTimeout을 실행할 때 백그라운드에서 시간을 카운팅하기 시작하고 콜백 함수를 해당 시간이 경과하면 호출하기 위해서 등록해둔다. 이후 자바스크립트는 곧바로 다음 코드의 실행을 이어나간다. 이와같은 메커니즘을 비동기 자바스크립트라고 한다. (참고 : https://developer.mozilla.org/ko/docs/Learn/JavaScript/Asynchronous/Introducing)
+
+setTimeout에 전달한 콜백 함수의 호출은 우리에게서 이루어지지 않는다. 그렇다면 어떻게 인자를 부여할 수 있을까? setTimeout의 세번째 파라미터부터는 콜백 함수에 부여할 인자를 전달할 수 있다. 아래 예시를 보자.
+
+```js
+setTimeout(
+  (firstName, lastName) => console.log(`Hello ${firstName} ${lastName}`),
+  3000,
+  "Ha Neul",
+  "Lee"
+); // 3초후 Hello Haneul Lee 출력.
+console.log("Waiting..."); // Waiting...
+```
+
+clearTimeout()을 이용해 타이머를 중지시킬 수 있다. setTimeout()을 호출하고 이를 변수에 할당한 후(setTimeout의 반환값은 타이머 식별자이다.), clearTimeout의 인자로 해당 변수명을 입력하면 타이머가 중단된다.
+
+```js
+const myName = { firstName: "Ha Neul", lastName: "Lee" };
+const helloTimer = setTimeout(
+  (name) => console.log(`hello ${name.firstName} ${name.lastName}`),
+  3000,
+  myName
+); // 3초후 Hello Ha Neul Lee 출력.
+console.log("Waiting..."); // Waiting...
+
+if (myName.lastName === "Lee") {
+  clearTimeout(helloTimer);
+}
+```
+
+### 8-2. setInterval
+
+어떤 작업이 특정 시간이 경과할 때마다 지속적으로 수행되게 하려면 setInterval을 사용하면 된다. setTimeout과 마찬가지로 clearTimeout을 사용해 타이머를 중단시킬 수 있다. 아래 예시를 살펴보자.
+
+```js
+const clock = setInterval(() => {
+  if (cnt === 10) {
+    clearTimeout(clock);
+  }
+  const now = new Date();
+  console.log(now);
+  cnt++;
+}, 1000); // 1초마다 날짜,시간을 출력한다. 10번 출력 후 정지.
+```
