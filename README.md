@@ -21,6 +21,8 @@ Today I Learned.
 
 - [Numbers, Dates, Intl and Timers](./JS/Numbers_Dates_Intl_and_Timers.md)
 
+- [Advanced DOM and Events](./JS/Advanced_DOM_and_Events.md)
+
 ## Java
 
 ## ORACLE
