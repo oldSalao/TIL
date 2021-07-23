@@ -135,3 +135,142 @@ document
 ```
 
 위에서 부모요소를 거치고 자식요소에 접근하는 것과 같이 DOM Tree내에서 위에서 아래로 탐색하는 방법을 DOM traversing이라고 한다. 해당 내용은 이후에 더 살펴보자.
+
+## 3. Styles, Attributes and Classes
+
+### 3-1. Styles
+
+자바스크립트를 통해 문서의 스타일을 다룰 수 있다. 아래 예시는 노드 객체의 style 프로퍼티를 이용하는 예시이다. style 프로퍼티는 인라인 스타일에 대해서만 작동한다는 것을 알아두자.
+
+```js
+message.style.backgroundColor = "#37383d";
+message.style.width = "120%";
+// 인라인 스타일로 적용됨. <div class="cookie-message" style="background-color: rgb(55, 56, 61); width: 120%;">...</div>
+
+console.log(message.style.height); // 아무것도 출력되지 않음. style 프로퍼티로는 인라인 스타일에만 접근 가능. 스타일 시트에 작성된 속성에 대해서는 접근할 수 없음.
+console.log(message.style.backgroundColor); // rgb(55, 56, 61)
+```
+
+인라인 스타일이 아닌 스타일 속성에 접근하기 위해서는 getComputedStyle() 함수를 이용한다. 파라미터에 노드 객체를 전달하면 해당 객체의 모든 스타일 속성을 프로퍼티로 지니고 있는 객체가 반환된다. 이를 통해 우리는 모든 스타일 속성에 접근할 수 있다.
+
+```js
+console.log(getComputedStyle(message).height); // 48.3333px. 모든 스타일 속성에 접근 가능. 정의하지 않은 속성에 대해서도 브라우저에 적용된 상태에 따른 속성에 접근한다.
+
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height) + 30 + "px";
+```
+
+CSS custom properties의 값을 변경할 수도 있다. 아래와 같이 CSS custom properties가 작성이 되어있다면
+
+```css
+:root {
+  --color-primary: #5ec576;
+  --color-secondary: #ffcb03;
+  --color-tertiary: #ff585f;
+  --color-primary-darker: #4bbb7d;
+  --color-secondary-darker: #ffbb00;
+  --color-tertiary-darker: #fd424b;
+  --color-primary-opacity: #5ec5763a;
+  --color-secondary-opacity: #ffcd0331;
+  --color-tertiary-opacity: #ff58602d;
+  --gradient-primary: linear-gradient(to top left, #39b385, #9be15d);
+  --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
+}
+```
+
+다음과 같이 프로퍼티의 값을 변경한다.
+
+```js
+document.documentElement.style.setProperty("--color-primary", "orangered");
+```
+
+### 3-2. Attributes
+
+노드 객체의 HTML 문서상 속성에도 접근할 수가 있다. 기본적으로 노드 객체에는 표준 속성에 대한 프로퍼티가 자동으로 생성되므로 간단하게 접근이 가능하다.(class는 className으로 접근해야 함) 비표준 속성은 getAttribute 메소드를 사용하여 접근해야 한다.
+
+```js
+const logo = document.querySelector(".nav__logo");
+
+console.log(logo); // <img src="img/logo.png" alt="Bankist logo" class="nav__logo" id="logo" designer="jonas">
+
+//Standard
+console.log(logo.alt); // Bankist logo
+console.log(logo.src); // http://127.0.0.1:8080/13-Advanced-DOM-Bankist/starter/img/logo.png
+console.log(logo.className); // nav__logo
+
+//Non-standard
+console.log(logo.designer); // undefined
+console.log(logo.getAttribute("designer")); // jonas
+```
+
+속성을 아래와 같이 임의대로 지정할 수도 있다.
+
+```js
+logo.alt = "Beautiful minimalist logo";
+
+console.log(logo); // <img src="img/logo.png" alt="Beautiful minimalist logo" class="nav__logo" id="logo" designer="jonas">
+```
+
+비표준 속성의 경우 setAttribute를 사용한다. setAttribute로 새로운 속성을 추가할 수도 있다.
+
+```js
+logo.setAttribute("designer", "haneul"); // designer 속성의 값을 haneul로 변경.
+logo.setAttribute("company", "Bankist"); // company 속성을 추가하고 값을 Bankist로 한다.
+
+console.log(logo); // <img src="img/logo.png" alt="Beautiful minimalist logo" class="nav__logo" id="logo" designer="haneul" company="Bankist">
+```
+
+예시중에서 src 속성의 경우 값이 상대경로이지만 프로퍼티로 접근하면 절대경로를 얻게 된다는것을 알 수 있는데 문서상의 값을 그대로 얻고 싶다면 getAttribute를 사용하면 된다. (link, a 태그의 href 속성에도 동일하게 적용됨)
+
+```js
+console.log(logo.src); // http://127.0.0.1:8080/13-Advanced-DOM-Bankist/starter/img/logo.png
+console.log(logo.getAttribute("src")); // img/logo.png
+```
+
+Data Attribute는 이름이 data-로 시작하는 특별한 속성이다.
+아래 html 코드에서 data-version-number가 Data Attribute이다.
+
+```HTML
+<img
+  src="img/logo.png"
+  alt="Bankist logo"
+  class="nav__logo"
+  id="logo"
+  designer="jonas"
+  data-version-number="3.0"
+/>
+```
+
+이는 노드의 프로퍼티중 dataset이라는 객체에 저장된다. 프로퍼티명은 Data Attribute 이름의 data-를 제외하고 -을 기준으로 카멜케이스가 적용된다.
+
+```js
+console.log(logo.dataset.versionNumber); // 3.0
+```
+
+## 3-3. Classes
+
+classList 프로퍼티를 통해 요소의 class 속성에 접근, 변경할 수 있다.
+
+```js
+logo.classList.add("c", "j");
+logo.classList.remove("c", "j");
+logo.classList.toggle("c");
+logo.classList.contains("c");
+
+console.log(logo.className); // nav__logo c
+```
+
+className 프로퍼티에 값을 할당하여 class 속성을 변경할 수도 있지만 이는 권장하지 않는다. 왜냐하면 기존의 class에 덮어씌워짐으로써 하나의 class만 사용할 수 있게 되기 때문이다.
+
+```js
+logo.classList.add("c", "j");
+logo.classList.remove("c", "j");
+logo.classList.toggle("c");
+logo.classList.contains("c");
+
+console.log(logo.className); // nav__logo c
+
+logo.className = "jonas";
+
+console.log(logo.className); // jonas
+```
