@@ -114,24 +114,12 @@ header.after(message.cloneNode(true)); // 마찬가지로 외부, 아래쪽에 �
 
 ### 2-3. Delete elements
 
-요소를 제거하는 것도 가능하다. 아래 예시는 버튼에 클릭이벤트가 발생한다면 remove 메소드를 이용해 message 요소를 제거하는 것이다.
+요소를 제거하는 
 
 ```js
 document
-  .querySelector(".btn--close-cookie")
-  .addEventListener("click", function () {
+  .querySelector('.btn--close-cookie')
+  .addEventListener('click', function () {
     message.remove();
   });
 ```
-
-remove 메소드는 요소를 제거하는 가장 최신의 방법이며 이 메소드가 존재하기 이전에는 부모 요소를 선택하고 자식 요소를 제거하는 방식을 사용했다. 아래 예시를 보자.
-
-```js
-document
-  .querySelector(".btn--close-cookie")
-  .addEventListener("click", function () {
-    message.parentElement.removeChild(message);
-  });
-```
-
-위에서 부모요소를 거치고 자식요소에 접근하는 것과 같이 DOM Tree내에서 위에서 아래로 탐색하는 방법을 DOM traversing이라고 한다. 해당 내용은 이후에 더 살펴보자.
