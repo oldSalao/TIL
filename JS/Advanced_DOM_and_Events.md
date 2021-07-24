@@ -249,7 +249,7 @@ console.log(logo.dataset.versionNumber); // 3.0
 
 ## 3-3. Classes
 
-classList 프로퍼티를 통해 요소의 class 속성에 접근, 변경할 수 있다.
+classList 프로퍼티와 메소드를 통해 요소의 class 속성에 접근, 변경할 수 있다.
 
 ```js
 logo.classList.add("c", "j");
@@ -274,3 +274,56 @@ logo.className = "jonas";
 
 console.log(logo.className); // jonas
 ```
+
+## 4. Types of Events and Event Handlers
+
+이벤트는 기본적으로 특정 DOM 노드에 의해서 생성되는 신호이다. 해당 신호는 어떤 일이 일어났다는 것을 의미한다. 예를들자면 마우스 클릭, 마우스 이동, 사용자의 전체화면 모드 전환 등 웹페이지에서 일어나는 모든 중요한 일들이 이벤트를 생성한다. 이벤트는 위의 일들이 일어나면 항상 발생하지만 이를 핸들링 하는것은 우리의 선택이다.
+
+이벤트의 종류는 다양하다. 아래 예시는 mouseenter 이벤트를 핸들링 한 것이며 해당 이벤트는 요소위에 마우스 포인터가 위치하게 되면 발생하게 된다.
+
+```js
+const h1 = document.querySelector("h1");
+
+h1.addEventListener("mouseenter", function (e) {
+  alert("addEventListener : Great! You are reading the heading");
+});
+```
+
+이벤트 리스너를 붙이는 방법이 한가지 더 있다. DOM 노드 객체의 onxxx(xxx는 이벤트명) 라는 프로퍼티에 이벤트 핸들러 함수를 할당하는 방법이다. 하지만 해당 방법은 약간 구식이다. 현재는 거의 addEventListener를 사용한다.
+
+```js
+h1.onmouseenter = function (e) {
+  alert("onmouseenter : Great! You are reading the heading");
+};
+```
+
+addEventListener가 onxxx보다 나은점은 두가지가 있다.
+
+- 동일한 이벤트에 대해 여러개의 이벤트 리스너를 추가할 수 있도록 한다. onxxx 같은 경우 핸들러 함수를 재할당하게 되면 기존의 핸들러 함수를 덮어써버리므로 이와 같은 작업이 불가능하다.
+
+  ```js
+  h1.addEventListener("mouseenter", function (e) {
+    alert("addEventListener : Great! You are reading the heading");
+  });
+
+  h1.addEventListener("mouseenter", function (e) {
+    alert("addEventListener : Second alert");
+  });
+  ```
+
+- 필요없어진 이벤트 리스너를 제거할 수 있다. 핸들러 함수를 정의하여 변수에 할당하여 이벤트 리스너에 추가하고, removeEventListner 메소드를 사용하면 이벤트 리스너를 제거하는 것이 가능하다.
+
+  ```js
+  const alertH1 = function (e) {
+    alert("addEventListener : Great! You are reading the heading");
+
+    h1.removeEventListener("mouseenter", alertH1);
+  };
+
+  h1.addEventListener("mouseenter", alertH1);
+  ```
+
+이벤트에 대한 내용은 다음 링크를 참조하면 좋다.
+https://developer.mozilla.org/ko/docs/Web/Events
+
+## 5. Event Propagation: Bubbling and Capturing
