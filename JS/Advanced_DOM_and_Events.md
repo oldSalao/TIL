@@ -327,3 +327,27 @@ addEventListener가 onxxx보다 나은점은 두가지가 있다.
 https://developer.mozilla.org/ko/docs/Web/Events
 
 ## 5. Event Propagation: Bubbling and Capturing
+
+자바스크립트의 이벤트는 Capturing phase와 Bubling phase라고 불리는 매우 중요한 속성들을 지니고 있다.
+
+![](./common/images/event_propagation.jpg)
+
+### 5-1. Capturing phase
+
+이벤트는 기본적으로 발생할 때 이벤트가 일어난 요소에 생성되는 것이 아니라 최상위 요소에 생성되는데 이때 Capturing phase가 발생한다. Capturing phase에서 이벤트는 최상위 요소에서부터 이벤트가 발생한 타겟 요소까지 전파된다. 즉 타겟 요소의 모든 조상 요소를 거치게 되는 것이다.
+
+### 5-2. Target phase
+
+Capturing phase에서 이벤트가 타겟 요소까지 전파가 되면 Target phase에 접어들어 이벤트를 타겟 요소에서 핸들링할 수 있게 된다.
+
+### 5-3. Bubbling phase
+
+Target phase 이후, 이벤트는 다시 타겟 요소로부터 최상위 요소까지 위로 전파되게 된다. 이 과정을 Bubbling phase라고 한다. 여기서 또 다시 이벤트는 모든 조상 요소를 거치게 된다.
+
+### 5-4. 몇가지 알아야할 사항들
+
+- 이벤트는 기본적으로 Target,Bubbling phase에서만 핸들링이 가능하다. 대신 이벤트 리스너가 Capturing phase내에서 이벤트를 감지하도록 설정할 수는 있다.
+
+- 모든 이벤트가 캡처링과 버블링을 수행하지는 않는다. 어떤 이벤트는 타겟 요소에서 바로 생성되어 타겟을 통해서만 핸들링 할 수 있는 경우도 있다.
+
+참고 : https://ko.javascript.info/bubbling-and-capturing#ref-212
