@@ -351,3 +351,122 @@ Target phase 이후, 이벤트는 다시 타겟 요소로부터 최상위 요소
 - 모든 이벤트가 캡처링과 버블링을 수행하지는 않는다. 어떤 이벤트는 타겟 요소에서 바로 생성되어 타겟을 통해서만 핸들링 할 수 있는 경우도 있다.
 
 참고 : https://ko.javascript.info/bubbling-and-capturing#ref-212
+
+### 5-5. Event Propagation in Practice
+
+아래와 같이 작성된 html에서 Bubbling을 다뤄본다.
+
+```html
+<nav class="nav">
+  <img
+    src="img/logo.png"
+    alt="Bankist logo"
+    class="nav__logo"
+    id="logo"
+    designer="jonas"
+    data-version-number="3.0"
+  />
+  <ul class="nav__links">
+    <li class="nav__item">
+      <a class="nav__link" href="#section--1">Features</a>
+    </li>
+    <li class="nav__item">
+      <a class="nav__link" href="#section--2">Operations</a>
+    </li>
+    <li class="nav__item">
+      <a class="nav__link" href="#section--3">Testimonials</a>
+    </li>
+    <li class="nav__item">
+      <a class="nav__link nav__link--btn btn--show-modal" href="#"
+        >Open account</a
+      >
+    </li>
+  </ul>
+</nav>
+```
+
+nav, nav\_\_links, nav\_\_link에 각각 마우스 클릭 이벤트 리스너를 달아주고 이벤트를 발생시켜보면 이벤트가 발생한 타겟 요소 뿐만 아니라 해당 요소를 포함하는 부모 요소의 backgroundColor까지 모두 변경된다. 이는 Bubbling에 의한 현상으로 이벤트가 발생하면 Capturing 이후 Bubbling을 통해 이벤트가 타겟 요소로부터 모든 부모 요소들을 거치게 되고, 부모 요소의 이벤트 리스너가 이벤트를 핸들링하기 때문이다.
+
+```js
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+
+document.querySelector(".nav").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+});
+
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+});
+
+document.querySelector(".nav__link").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+});
+```
+
+핸들러 함수 내에서 this는 이벤트 리스너가 붙여진 요소를 가리키는 반면, 이벤트객체의 target 프로퍼티는 이벤트가 발생한 요소를 가리킨다. 만약 아래 예시에서 nav\_\_link 요소를 클릭한다면 nav\_\_link 요소만 세번 출력된다. currentTarget이라는 프로퍼티도 존재하는데, 이는 this와 마찬가지로 리스너가 붙여진 요소를 가리킨다.
+
+```js
+document.querySelector(".nav__link").addEventListener("click", function (e) {
+  console.log(e.target);
+});
+
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  console.log(e.target);
+});
+
+document.querySelector(".nav").addEventListener("click", function (e) {
+  console.log(e.target);
+});
+```
+
+bubbling과 같은 이벤트 전파를 멈추는 방법이 있는데, 이는 이벤트 객체의 stopPropagation 메소드를 호출하는 것이다. 아래 예시에서 nav\_\_link 요소를 클릭하더라도 부모 요소인 nav\_\_links와 nav의 핸들러 함수는 작동하지 않는다.
+
+```js
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+
+document.querySelector(".nav__link").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+  e.stopPropagation();
+});
+
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+});
+
+document.querySelector(".nav").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+});
+```
+
+기본적으로 Capturing Phase에는 이벤트 리스너가 이벤트를 핸들링 하지 않는다. 하지만 addEventListner의 세번째 파라미터에 true를 전달한다면 이벤트 리스너가 더이상 Bubbling Phase에 이벤트를 핸들링하지 않게 되고 Capturing Phase에 이벤트를 핸들링 하게 된다.
+
+아래 예시에서 nav\_\_link에 클릭 이벤트를 발생 시키면 지금까지와 동일하게 세 요소의 색이 모두 바뀌지만 nav요소가 가장 먼저 출력되어 nav -> nav\_\_link -> nav\_\_links 의 순서대로 이벤트 리스너가 이벤트를 핸들링하는 것을 알 수 있다. nav 요소의 addEventListner의 세번째 파라미터에 true를 전달했고, 이로인해 nav의 이벤트 리스너는 Capturing Phase에 이벤트를 핸들링했기 때문에 나타난 결과다.
+
+```js
+document.querySelector(".nav__link").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log(this);
+});
+
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log(this);
+});
+
+document.querySelector(".nav").addEventListener(
+  "click",
+  function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log(this);
+  },
+  true
+);
+```
