@@ -352,7 +352,7 @@ Target phase 이후, 이벤트는 다시 타겟 요소로부터 최상위 요소
 
 참고 : https://ko.javascript.info/bubbling-and-capturing#ref-212
 
-### 5-5. Event Propagation in Practice
+## 6. Event Propagation in Practice
 
 아래와 같이 작성된 html에서 Bubbling을 다뤄본다.
 
@@ -469,4 +469,32 @@ document.querySelector(".nav").addEventListener(
   },
   true
 );
+```
+
+## 7. Event Delegation
+
+아래와 같이 querySelectorAll로 얻어낸 노드 리스트에 forEach 메소드를 사용하여 이벤트 리스너를 붙이는 예시가 있다. 이 예시는 만약 노드 리스트 요소의 갯수가 많다면 효율이 떨어지는 코드이다. 이와 같은 비효율적인 예시를 개선하기위해 이벤트 Bubbling을 활용한 이벤트 위임을 적용해보도록 하겠다.
+
+```js
+document.querySelectorAll(".nav__link").forEach(function (el) {
+  el.addEventListener("click", function (e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute("href")).scrollIntoView({
+      behavior: "smooth",
+    });
+  });
+});
+```
+
+위의 코드 대신에 nav\_\_link를 감싸고 있는 부모요소인 nav\_\_links에 이벤트 리스너를 붙여보자. 이벤트 객체의 target 프로퍼티를 사용하면 비록 이벤트 리스너는 부모 요소에 붙여졌지만 이벤트가 발생한 요소에 대한 작업을 수행할 수 있다. 아래 예시 같은 경우 if문을 활용하여 부모요소가 아닌 자식요소에 의해 이벤트가 발생되었을 때에만 작업이 수행되도록 하였다. 이러한 전략을 이벤트 위임이라고 한다.
+
+```js
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  e.preventDefault();
+  if (e.target.classList.contains("nav__link")) {
+    document.querySelector(e.target.getAttribute("href")).scrollIntoView({
+      behavior: "smooth",
+    });
+  }
+});
 ```
