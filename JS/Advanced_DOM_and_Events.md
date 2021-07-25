@@ -44,7 +44,7 @@ DOM 트리의 모든 노드는 자바스크립트에서 객체로 표현된다. 
 
 ### 2-1. Selecting Elements
 
-DOM 요소에 접근하는 방법에는 여러가지가 있다. 아래 예시를 보자. querySelector는 자주 사용해봤으니 넘어가고, document.documentElement, document.head, document.body 를 통해 각각 html, head, body 요소에 접근할 수 있다. querySelectorAll 은 노드리스트를 반환하는데, 이는 Array.from()을 사용하면 배열로 변환이 가능하다.
+DOM 요소에 접근하는 방법에는 여러가지가 있다. 아래 예시를 보자. querySelector는 자주 사용해봤으니 넘어가고, document.documentElement, document.head, document.body 를 통해 각각 html, head, body 요소에 접근할 수 있다. querySelectorAll 은 노드리스트를 반환하는데, 이는 Array.from() 또는 스프레드 연산자를 사용하면 배열로 변환이 가능하다.
 
 ```js
 console.log(document.documentElement); // <html>...</html>
@@ -60,9 +60,11 @@ console.log(allSections); // NodeList(4) [section#section--1.section, section#s
 const allSectionsArr = Array.from(document.querySelectorAll(".section"));
 
 console.log(allSectionsArr); // (4) [section#section--1.section, section#section--2.section, section#section--3.section, section.section.section--sign-up]
+
+console.log([...document.querySelectorAll(".section")]); // (4) [section#section--1.section, section#section--2.section, section#section--3.section, section.section.section--sign-up]
 ```
 
-아래 예시를 보면 getElementsByTagName, getElementsByClassName은 HTMLCollection을 반환하는 것을 알수 있는데, 이는 NodeList와는 조금 다르다. HTMLCollection은 살아있다고 표현을 하는데, 이는 문서가 변경되면 HTMLCollection 또한 자동으로 변경되기 때문이다. (NodeList는 이런 현상이 일어나지 않음) HTMLCollection 또한 NodeList와 마찬가지로 Array.form()을 통해 배열로 변환이 가능하다. (배열로 변환 시 문서가 변경되어도 요소가 변경되지 않음) HTMLCollection은 때로 유용할 수 있으니 해당 내용을 꼭 유념하자.
+아래 예시를 보면 getElementsByTagName, getElementsByClassName은 HTMLCollection을 반환하는 것을 알수 있는데, 이는 NodeList와는 조금 다르다. HTMLCollection은 살아있다고 표현을 하는데, 이는 문서가 변경되면 HTMLCollection 또한 자동으로 변경되기 때문이다. (NodeList는 이런 현상이 일어나지 않음) HTMLCollection 또한 NodeList와 마찬가지로 Array.form() 또는 스프레드 연산자를 통해 배열로 변환이 가능하다. (배열로 변환 시 문서가 변경되어도 요소가 변경되지 않음) HTMLCollection은 때로 유용할 수 있으니 해당 내용을 꼭 유념하자.
 
 ```js
 console.log(document.getElementById("section--1")); // <section class="section" id="section--1">...</section>
@@ -74,6 +76,8 @@ console.log(allButtons); // HTMLCollection(9) [button.btn--text.btn--scroll-to,
 const allButtonsArr = Array.from(document.getElementsByTagName("button"));
 
 console.log(allButtonsArr); // (9) [button.btn--text.btn--scroll-to, button.btn.operations__tab.operations__tab--1.operations__tab--active, button.btn.operations__tab.operations__tab--2, button.btn.operations__tab.operations__tab--3, button.slider__btn.slider__btn--left, button.slider__btn.slider__btn--right, button.btn.btn--show-modal, button.btn--close-modal, button.btn]
+
+console.log([...document.getElementsByTagName("button")]); // (9) [button.btn--text.btn--scroll-to, button.btn.operations__tab.operations__tab--1.operations__tab--active, button.btn.operations__tab.operations__tab--2, button.btn.operations__tab.operations__tab--3, button.slider__btn.slider__btn--left, button.slider__btn.slider__btn--right, button.btn.btn--show-modal, button.btn--close-modal, button.btn]
 
 console.log(document.getElementsByClassName("btn")); // HTMLCollection(5) [button.btn.operations__tab.operations__tab--1.operations__tab--active, button.btn.operations__tab.operations__tab--2, button.btn.operations__tab.operations__tab--3, button.btn.btn--show-modal, button.btn]
 ```
@@ -134,7 +138,7 @@ document
   });
 ```
 
-위에서 부모요소를 거치고 자식요소에 접근하는 것과 같이 DOM Tree내에서 위에서 아래로 탐색하는 방법을 DOM traversing이라고 한다. 해당 내용은 이후에 더 살펴보자.
+위에서 부모요소를 거치고 자식요소에 접근하는 것과 같이 DOM Tree내에서 요소를 탐색하는 방법을 DOM traversing이라고 한다. 해당 내용은 이후에 더 살펴보자.
 
 ## 3. Styles, Attributes and Classes
 
@@ -497,4 +501,78 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
     });
   }
 });
+```
+
+## 8. DOM Traversing
+
+우리는 DOM Traversing을 통해서 다른 요소를 기반으로 요소를 선택할 수 있다. 자식 요소나 부모 요소 같은 다른 요소를 이용해 요소를 선택해야 하는 경우, 또는 런타임에서 DOM의 구조를 모르는 경우에 DOM Traversing이 필요하다. 아래 html 코드를 이용해 DOM Traversing을 수행해보자.
+
+```html
+<div class="header__title">
+  <h1>
+    When
+    <!-- Green highlight effect -->
+    <span class="highlight">banking</span>
+    meets<br />
+    <span class="highlight">minimalist</span>
+  </h1>
+  <h4>A simpler banking experience for a simpler life.</h4>
+  <button class="btn--text btn--scroll-to">Learn more &DownArrow;</button>
+  <img src="img/hero.png" class="header__img" alt="Minimalist bank items" />
+</div>
+```
+
+### 8-1. Going downwards : child
+
+우선 document가 아닌 특정 요소 노드 객체에 대해 querySelector, querySelectorAll 메소드를 호출하면 문서 전체가 아닌 메소드를 호출한 노드의 자식 요소에 대해서 탐색을 수행한다. 이때 바로 아래 자식요소가 아니어도 깊이의 제한이 없이 탐색을 수행한다.
+
+childNodes 프로퍼티 같은 경우 바로 아래 자식 노드를 NodeList로 지니고 있다. 단, 요소 노드 뿐만 아니라 모든 타입의 노드를 지니고 있다는 것을 잘 알아야 한다.
+
+children 프로퍼티는 바로 아래 자식 요소 노드를 HTMLCollection으로 지니고 있다.
+
+firstElementChild와 lastElementChild는 각각 바로 아래 자식 요소중 첫번째와 마지막 요소를 가리킨다.
+
+```js
+const h1 = document.querySelector("h1");
+
+console.log(h1.querySelectorAll(".highlight")); // NodeList(2) [span.highlight, span.highlight]
+
+console.log(h1.childNodes); // NodeList(9) [text, comment, text, span.highlight, text, br, text, span.highlight, text]
+
+console.log(h1.children); // HTMLCollection(3) [span.highlight, br, span.highlight]
+
+console.log(h1.firstElementChild); // <span class="highlight">banking</span>
+
+console.log(h1.lastElementChild); // <span class="highlight">minimalist</span>
+```
+
+### 8-2. Going upwards : parents
+
+부모 요소를 선택하는 방법으로 우선 parentNode, parentElement 프로퍼티가 있다. parentNode는 childNodes처럼 모든 타입의 바로 위 부모 노드를 가리키며 parentElement는 요소를 가리킨다.
+
+closest 메소드는 querySelector와는 반대 방향으로 작동한다고 이해하면 쉽다. 파라미터에 전달한 선택자를 지닌 메소드를 호출한 요소로부터 가장 가까운 부모 요소를 반환한다. (문서 루트까지 탐색하며 자기 자신을 반환할 수도 있음.)
+
+```js
+console.log(h1.parentNode); // <div class="header__title">...</div>
+console.log(h1.parentElement); // <div class="header__title">...</div>
+
+console.log(h1.closest(".header")); // <header class="header">...</header>
+```
+
+### 8-3. Going sideways : sibilings
+
+형제 요소는 오직 바로 이전, 다음 형제 요소에만 접근할 수 있다.(previous, next) previousSibling, nextSibling 은 모든 타입의 형제 노드를 가리키며, previousElementSibling, nextElementSibling은 형제 요소를 가리킨다.
+
+```js
+console.log(h1.previousSibling); // #text
+console.log(h1.nextSibling); // #text
+
+console.log(h1.previousElementSibling); // null
+console.log(h1.nextElementSibling); // <h4>A simpler banking experience for a simpler life.</h4>
+```
+
+만약 모든 형제 요소가 필요하다면 부모요소를 이용해 모든 자식 요소를 선택함으로써 모든 형제 요소를 얻을 수 있다. 이 방법을 통해 얻은 요소들에는 당연히 자신 스스로도 포함된다.
+
+```js
+console.log(h1.parentElement.children); // HTMLCollection(4) [h1, h4, button.btn--text.btn--scroll-to, img.header__img]
 ```
